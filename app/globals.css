@@ -31,9 +31,8 @@ body {
   background-color: var(--background);
   font-size: 14px;
   font-family: var(--font-roboto-mono);
+}
 
-  /* Possible change */
-  display: grid;
-  justify-items: center;
-  padding: 0 20px;
+main {
+  flex-grow: 1;
 }

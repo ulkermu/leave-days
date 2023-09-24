@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 const roboto = Roboto({
-  weight: ['400', '700'],
+  weight: ['300', '400', '500', '700'],
   style: ['normal', 'italic'],
   subsets: ["latin"]
 });
@@ -22,7 +22,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <body style={roboto.style}>
+      <body
+        style={roboto.style}
+        className='flex flex-col min-h-screen items-center'
+      >
         <Providers>
           <Header />
           {children}
