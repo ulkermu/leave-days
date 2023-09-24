@@ -1,5 +1,4 @@
 import './globals.css'
-import '@/style/header/Header.css'
 import { Roboto } from "next/font/google"
 import type { Metadata } from 'next'
 import Providers from "./providers"
