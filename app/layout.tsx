@@ -1,16 +1,20 @@
 import './globals.css'
 import '@/style/header/Header.css'
-import { Open_Sans } from "next/font/google"
+import { Roboto } from "next/font/google"
 import type { Metadata } from 'next'
 import Providers from "./providers"
-import Header from '@/components/header/Header'
+import { Footer, Header } from '@/components'
 
 export const metadata: Metadata = {
   title: 'Leave Days',
   description: 'Employess must stay on course.',
 }
 
-const openSans = Open_Sans({ subsets: ["latin"] })
+const roboto = Roboto({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ["latin"]
+});
 
 export default function RootLayout({
   children,
@@ -19,10 +23,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <body style={openSans.style}>
+      <body style={roboto.style}>
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>

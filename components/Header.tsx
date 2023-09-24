@@ -24,8 +24,8 @@ const Header = () => {
   return (
     <header className="header">
       <nav className="nav">
-        <Link href={"/"}>Anasayfa</Link>
-        <Link href={"/login"}>Giriş</Link>
+        <Link href={"/"}>Home</Link>
+        <Link href={"/login"}>Login</Link>
       </nav>
       <IconButton sx={{ width: '40px', height: '40px' }} onClick={() => handleTheme(theme === "light" ? "dark" : "light")}>
         {theme === "dark" ? <DarkModeIcon sx={{ color: 'var(--text)' }} /> : <LightModeIcon sx={{ color: 'var(--text)' }} />}
