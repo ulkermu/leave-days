@@ -8,6 +8,7 @@
   --text: #1C2025;
   --textHover: #434D5B;
   --backHover: #F3F6F9;
+  --gradientText: linear-gradient(to left, #6216EE, #FF0266)
 }
 
 [class="dark"]:root {
@@ -16,6 +17,7 @@
   --text: #FFF;
   --textHover: #ACBAC8;
   --backHover: #1F262E;
+  --gradientText: linear-gradient(to left, #BB86FC, #FF7597)
 }
 
 *,
@@ -35,4 +37,10 @@ body {
 
 main {
   flex-grow: 1;
+}
+
+.gradient-text {
+  background-image: var(--gradientText);
+  -webkit-background-clip: text;
+  color: transparent;
 }
