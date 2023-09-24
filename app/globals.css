@@ -44,3 +44,7 @@ main {
   -webkit-background-clip: text;
   color: transparent;
 }
+
+.lottie rect {
+  fill: var(--background);
+}
