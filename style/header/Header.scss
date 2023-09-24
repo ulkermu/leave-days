@@ -5,20 +5,4 @@
   padding: 20px;
   justify-content: space-between;
   color: var(--text);
-
-  .nav {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-
-    a {
-      padding: 8px;
-      border-radius: 8px;
-      font-weight: 700;
-
-      &:hover {
-        background-color: var(--backHover);
-      }
-    }
-  }
 }

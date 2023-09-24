@@ -1,4 +1,4 @@
-import CustomButton from '@/components/CustomButton'
+import { CustomButton } from '@/components/index'
 import { Metadata } from 'next'
 import React from 'react'
 

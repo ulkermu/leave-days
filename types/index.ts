@@ -5,5 +5,10 @@ export interface CustomButtonProps {
   containerStyles?: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
   disable?: boolean;
-  btnType?: string;
-} 
+}
+
+export interface CustomNavLinkProps {
+  title: string;
+  containerStyles?: string;
+  href: string;
+}
