@@ -1,19 +1,18 @@
-import { CustomButton } from '@/components/index'
-import { Metadata } from 'next'
-import React from 'react'
+import LoginForm from "@/components/loginForm/LoginForm";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: 'Leave Days | Login',
-	description: 'Login & Destroy.',
-}
+  title: "Leave Days | Sign In",
+  description: "Login & Destroy",
+};
+
 
 const Login = () => {
+  return (
+    <main>
+      <LoginForm />
+    </main>
+  );
+};
 
-	return (
-		<main>
-			<CustomButton title='Register' />
-		</main>
-	)
-}
-
-export default Login
+export default Login;
