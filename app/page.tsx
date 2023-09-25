@@ -15,7 +15,7 @@ export default function Home() {
               Track Leave Days
             </h1>
             <h3 className="my-4 text-2xl max-[500px]:text-sm">
-              Track every trace of your employees' leave days and evasion. For
+              Track every trace of your employees leave days and evasion. For
               more efficient days, do not neglect to use us.
             </h3>
             <Link className="w-fit mx-auto" href="/register">
