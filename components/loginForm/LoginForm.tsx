@@ -22,7 +22,7 @@ const LoginForm = () => {
 
   return (
     <ThemeProvider theme={theme === "dark" ? darkTheme : lightTheme}>
-      <div>
+      <div className="flex justify-center">
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={schema}
@@ -31,7 +31,7 @@ const LoginForm = () => {
           }}
         >
           {(props) => (
-            <Form className="flex flex-col gap-2.5 max-w-md border p-5 rounded-lg">
+            <Form className="rounded-lg max-w-md w-full flex flex-col gap-2.5 shadow-md p-5">
               <Field name="email">
                 {({ field, form }: any) => (
                   <CustomField

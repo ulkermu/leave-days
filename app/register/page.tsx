@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 const Register = () => {
   return (
-    <main>
+    <main className="max-w-[1280px] w-full p-5">
       <RegisterForm />
     </main>
   );

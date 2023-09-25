@@ -6,10 +6,9 @@ export const metadata: Metadata = {
   description: "Login & Destroy",
 };
 
-
 const Login = () => {
   return (
-    <main>
+    <main className="max-w-[1280px] w-full p-5">
       <LoginForm />
     </main>
   );
