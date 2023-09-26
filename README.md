@@ -29,7 +29,7 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Tech Stack
 
 - Next.js
-- React
+- Redux
 - Tailwind
 - TypeScript
 - Firebase
@@ -56,6 +56,6 @@ npm i lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-r
 
 ## Contact
 
-- Email: [mailto:muratulker93@gmail.com]muratulker93@gmail.com
+- Email: mailto:muratulker93@gmail.com
 - GitHub: [github.com/ulkermu](https://github.com/ulkermu)
 - Twitter: [@muratulker1993](https://twitter.com/muratulker1993)
