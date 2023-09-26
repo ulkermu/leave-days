@@ -4,7 +4,7 @@ Creating a system where we can input the leave days used within the company and 
 
 ## Deployed on Vercel
 
-[leave-days.vercel.app]
+[leave-days.vercel.app]leave-days.vercel.app
 
 ## Getting Started
 
