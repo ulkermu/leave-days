@@ -54,7 +54,10 @@ const LoginForm = () => {
                   />
                 )}
               </Field>
-              <Button className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200">
+              <Button
+                type="submit"
+                className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200"
+              >
                 Sign In
               </Button>
             </Form>
