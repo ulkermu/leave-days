@@ -55,6 +55,6 @@ npm i lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-r
 
 ## Contact
 
-- Email: mailto:muratulker93@gmail.com
+- Email: muratulker93@gmail.com
 - GitHub: [github.com/ulkermu](https://github.com/ulkermu)
 - Twitter: [@muratulker1993](https://twitter.com/muratulker1993)
