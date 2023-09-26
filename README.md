@@ -1,5 +1,10 @@
 ## The purpose of this project
+
 Creating a system where we can input the leave days used within the company and add or remove employees.
+
+## Deployed on Vercel
+
+[leave-days.vercel.app]
 
 ## Getting Started
 
@@ -21,17 +26,34 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js
+- React
+- Tailwind
+- TypeScript
+- Firebase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Packages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- npm lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-redux @mui/material @emotion/react @emotion/styled @mui/icons-material
 
-## Deploy on Vercel
+## Folder Stracture
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- public: Static files and assets
+- app: Page views & layouts
+- components: UI components used across the application
+- pages: Application pages
+- assets: Animations & Images
+- theme: Dark Mode & Light Mode
+- types: Interfaces
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+[MIT License](LICENSE)
+
+## Contact
+
+- Email: [mailto:muratulker93@gmail.com]muratulker93@gmail.com
+- GitHub: [github.com/ulkermu](https://github.com/ulkermu)
+- Twitter: [@muratulker1993](https://twitter.com/muratulker1993)
