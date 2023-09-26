@@ -45,7 +45,6 @@ npm i lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-r
 - public: Static files and assets
 - app: Page views & layouts
 - components: UI components used across the application
-- pages: Application pages
 - assets: Animations & Images
 - theme: Dark Mode & Light Mode
 - types: Interfaces
