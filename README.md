@@ -36,7 +36,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Packages
 
-- npm lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-redux @mui/material @emotion/react @emotion/styled @mui/icons-material
+```bash
+npm lottie formik yup lottie-react next-themes @reduxjs/toolkit @types/react-redux @mui/material @emotion/react @emotion/styled @mui/icons-material
+```
 
 ## Folder Stracture
 
