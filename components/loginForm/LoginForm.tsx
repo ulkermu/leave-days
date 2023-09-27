@@ -27,8 +27,9 @@ const LoginForm = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={schema}
-          onSubmit={(values) => {
-            signIn(values.email, values.password);
+          onSubmit={async (values) => {
+            const user = await signIn(values.email, values.password);
+            console.log(user)
           }}
         >
           {(props) => (

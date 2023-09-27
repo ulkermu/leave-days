@@ -30,8 +30,9 @@ const RegisterForm = () => {
             password: "",
           }}
           validationSchema={schema}
-          onSubmit={(values) => {
-            signUp(values.email, values.password);
+          onSubmit={async (values) => {
+            const user = await signUp(values.email, values.password);
+            console.log(user);
           }}
         >
           {(props) => (
