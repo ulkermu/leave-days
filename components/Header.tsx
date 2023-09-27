@@ -1,5 +1,5 @@
-import { CustomNavLink } from "@/components/index";
-import ThemeSwitcher from "./ThemeSwitcher";
+import { CustomNavLink, ThemeSwitcher } from "@/components/index";
+
 
 const Header = () => {
   return (

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 const Login = () => {
   return (
     <main className="max-w-[1280px] w-full p-5">
-      <Toaster />
+      <Toaster position="top-right" />
       <SignForm />
     </main>
   );

@@ -11,7 +11,7 @@ import { signIn, signUp } from "@/app/firabase";
 const SignForm = () => {
   const { theme } = useTheme();
   const location = window.location.pathname;
-  const isSignInPage = location === "/register";
+  const isSignInPage = location === "/login";
 
   const schema = Yup.object({
     email: Yup.string()
@@ -34,11 +34,11 @@ const SignForm = () => {
           validationSchema={schema}
           onSubmit={async (values) => {
             if (isSignInPage) {
-              const user = await signUp(values.email, values.password);
-              console.log("sign up", user);
-            } else {
               const user = await signIn(values.email, values.password);
               console.log("sign in", user);
+            } else {
+              const user = await signUp(values.email, values.password);
+              console.log("sign up", user);
             }
           }}
         >
@@ -70,7 +70,7 @@ const SignForm = () => {
                 type="submit"
                 className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200"
               >
-                {isSignInPage ? "Sign In" : "Sign Out"}
+                {isSignInPage ? "Sign In" : "Sign Up"}
               </Button>
             </Form>
           )}

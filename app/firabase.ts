@@ -28,6 +28,7 @@ export const signUp = async (email: string, password: string) => {
       email,
       password
     );
+    toast.success("You are a member now!");
     return user;
   } catch (error: any) {
     toast.error(error.message);
@@ -37,6 +38,7 @@ export const signUp = async (email: string, password: string) => {
 export const signIn = async (email: string, password: string) => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
+    toast.success("You're In!");
     return user;
   } catch (error: any) {
     toast.error(error.message);
