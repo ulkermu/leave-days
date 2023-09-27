@@ -29,10 +29,9 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Tech Stack
 
 - Next.js
-- Redux
+- Firebase
 - Tailwind
 - TypeScript
-- Firebase
 
 ## Packages
 
