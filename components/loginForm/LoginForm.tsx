@@ -6,6 +6,7 @@ import CustomField from "../registerForm/CustomField";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
+import { signIn } from "@/app/firabase";
 
 const LoginForm = () => {
   const { theme } = useTheme();
@@ -17,7 +18,7 @@ const LoginForm = () => {
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password be at least 6 char.")
-      .max(15, "Password max be 15 char."),
+      .max(14, "Password max be 14 char."),
   });
 
   return (
@@ -27,7 +28,7 @@ const LoginForm = () => {
           initialValues={{ email: "", password: "" }}
           validationSchema={schema}
           onSubmit={(values) => {
-            console.log(values);
+            signIn(values.email, values.password);
           }}
         >
           {(props) => (

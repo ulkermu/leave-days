@@ -6,20 +6,19 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
+import { signUp } from "@/app/firabase";
 
 const RegisterForm = () => {
   const { theme } = useTheme();
 
   const schema = Yup.object({
-    firstName: Yup.string().required("Name is required."),
-    lastName: Yup.string().required("Lastname is required."),
     email: Yup.string()
       .required("Email is required.")
       .email("Email format should be true."),
     password: Yup.string()
       .required("Password is required")
       .min(6, "Password be at least 6 char.")
-      .max(15, "Password max be 15 char."),
+      .max(14, "Password max be 14 char."),
   });
 
   return (
@@ -27,42 +26,16 @@ const RegisterForm = () => {
       <div className="flex justify-center">
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
             email: "",
             password: "",
           }}
           validationSchema={schema}
           onSubmit={(values) => {
-            console.log(values);
+            signUp(values.email, values.password);
           }}
         >
           {(props) => (
             <Form className="rounded-lg max-w-md w-full flex flex-col gap-2.5 shadow-md p-5">
-              <div className="flex gap-2.5">
-                <Field name="firstName">
-                  {({ field, form }: any) => (
-                    <CustomField
-                      field={field}
-                      label="First Name"
-                      type="text"
-                      error={form.errors.firstName && form.touched.firstName}
-                      text={form.errors.firstName}
-                    />
-                  )}
-                </Field>
-                <Field name="lastName">
-                  {({ field, form }: any) => (
-                    <CustomField
-                      field={field}
-                      label="Last Name"
-                      type="text"
-                      error={form.errors.lastName && form.touched.lastName}
-                      text={form.errors.lastName}
-                    />
-                  )}
-                </Field>
-              </div>
               <Field name="email">
                 {({ field, form }: any) => (
                   <CustomField

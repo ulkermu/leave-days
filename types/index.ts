@@ -12,3 +12,8 @@ export interface CustomNavLinkProps {
   containerStyles?: string;
   href: string;
 }
+
+export interface SignUpProps {
+  email: string;
+  password: string;
+}
