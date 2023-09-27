@@ -1,4 +1,4 @@
-import LoginForm from "@/components/loginForm/LoginForm";
+import { SignForm } from "@/components";
 import { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 
@@ -11,7 +11,7 @@ const Login = () => {
   return (
     <main className="max-w-[1280px] w-full p-5">
       <Toaster />
-      <LoginForm />
+      <SignForm />
     </main>
   );
 };

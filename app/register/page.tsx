@@ -1,4 +1,4 @@
-import { RegisterForm } from "@/components";
+import { SignForm } from "@/components";
 import { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 
@@ -11,7 +11,7 @@ const Register = () => {
   return (
     <main className="max-w-[1280px] w-full p-5">
       <Toaster position="top-right" />
-      <RegisterForm />
+      <SignForm />
     </main>
   );
 };

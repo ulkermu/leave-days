@@ -2,6 +2,6 @@ import Header from "./Header";
 import CustomButton from "./CustomButton";
 import Footer from "./Footer";
 import CustomNavLink from "./CustomNavLink";
-import RegisterForm from "./registerForm/RegisterForm";
+import SignForm from "./sign/SignForm";
 
-export { Header, CustomButton, Footer, CustomNavLink, RegisterForm };
+export { Header, CustomButton, Footer, CustomNavLink, SignForm };
