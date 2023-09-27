@@ -4,14 +4,16 @@ import * as Yup from "yup";
 import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
-import CustomField from "./CustomField";
 import { darkTheme, lightTheme } from "@/theme";
 import { signIn, signUp } from "@/app/firabase";
+import { CustomField } from ".";
+import { usePathname } from "next/navigation";
 
 const SignForm = () => {
   const { theme } = useTheme();
-  const location = window.location.pathname;
-  const isSignInPage = location === "/login";
+  const pathname = usePathname();
+
+  const isSignInPage = pathname === "/login";
 
   const schema = Yup.object({
     email: Yup.string()
