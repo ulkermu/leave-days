@@ -4,6 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 import toast from "react-hot-toast";
 
@@ -19,7 +20,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth();
+const auth = getAuth(app);
+
+export const getCurrentUser = async () => {
+  const promisifiedOnAuthStateChanged = (auth: any) => {
+    return new Promise((resolve, reject) => {
+      auth.onAuthStateChanged((user: any) => {
+        if (user) {
+          resolve(user.uid);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  };
+
+  const uid = await promisifiedOnAuthStateChanged(auth);
+  return uid;
+};
 
 export const signUp = async (email: string, password: string) => {
   try {

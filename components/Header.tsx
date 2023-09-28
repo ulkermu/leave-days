@@ -1,6 +1,5 @@
 import { CustomNavLink, ThemeSwitcher } from "@/components/index";
 
-
 const Header = () => {
   return (
     <header className="flex max-w-[1280px] w-full justify-between p-5">
