@@ -9,6 +9,11 @@ const Header = () => {
           href="/"
           containerStyles="dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold"
         />
+        <CustomNavLink
+          title="Play Ground"
+          href="/play-ground"
+          containerStyles="dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold"
+        />
       </nav>
       <div className="flex gap-2 items-center">
         <CustomNavLink
