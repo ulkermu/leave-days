@@ -2,7 +2,6 @@
 import Lottie from "lottie-react";
 import calenderAnimation from "@/assets/calender-employee.json";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
-import { IconButton } from "@mui/material";
 import Link from "next/link";
 
 export default function Home() {
@@ -19,9 +18,9 @@ export default function Home() {
               more efficient days, do not neglect to use us.
             </h3>
             <Link className="w-fit mx-auto" href="/register">
-              <IconButton className="flex gap-2 rounded-md font-bold ease-out duration-300 px-6 py-3 max-[500px]:px-2 max-[500px]:py-2 text-xl max-[500px]:text-sm bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-500 w-fit mx-auto text-slate-200	dark:text-slate-800">
+              <button className="flex gap-2 rounded-md font-bold ease-out duration-300 px-6 py-3 max-[500px]:px-2 max-[500px]:py-2 text-xl max-[500px]:text-sm bg-purple-500 hover:bg-purple-600 dark:bg-purple-400 dark:hover:bg-purple-500 w-fit mx-auto text-slate-200	dark:text-slate-800">
                 <TravelExploreIcon /> Explore
-              </IconButton>
+              </button>
             </Link>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import "./globals.css";
 import { Roboto } from "next/font/google";
 import type { Metadata } from "next";
-// import Providers from "./providers";
 import Providers from "./GlobalRedux/provider";
 import { Footer, Header } from "@/components";
 

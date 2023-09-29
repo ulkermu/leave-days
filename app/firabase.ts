@@ -66,6 +66,7 @@ export const signIn = async (email: string, password: string) => {
 export const logOut = async () => {
   try {
     await signOut(auth);
+    toast.success("You're out of pack now!");
     return true;
   } catch (error: any) {
     toast.error(error.message);
