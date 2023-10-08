@@ -17,3 +17,8 @@ export interface SignUpProps {
   email: string;
   password: string;
 }
+
+export interface NavLink {
+  title: string;
+  href: string;
+}

@@ -1,12 +1,12 @@
 "use client";
 
-import type { RootState } from "../GlobalRedux/store";
+import type { RootState } from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import {
   increment,
   decrement,
   incrementByAmount,
-} from "@/app/GlobalRedux/Features/counter/counterSlice";
+} from "@/app/redux/features/counter/counterSlice";
 
 const PlayGround = () => {
   const count = useSelector((state: RootState) => state.counter.value);
