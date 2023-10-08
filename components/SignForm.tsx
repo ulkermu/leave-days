@@ -2,17 +2,16 @@
 
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Button, CircularProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
 import { signIn, signUp } from "@/app/firabase";
-import { CustomField } from ".";
+import { CustomField, CustomLoading } from ".";
 import { usePathname, useRouter } from "next/navigation";
 import { setAuth } from "@/app/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import toast from "react-hot-toast";
 
 const SignForm = () => {
   const { theme } = useTheme();
@@ -48,13 +47,11 @@ const SignForm = () => {
             if (isSignInPage) {
               const user = await signIn(values.email, values.password);
               dispatch(setAuth(user?.uid));
-              toast.success("You're In!");
               setLoading(false);
               router.push("/dashboard");
             } else {
               await signUp(values.email, values.password);
               setLoading(false);
-              toast.success("You are a member now!");
               router.push("/");
             }
           }}
@@ -84,10 +81,16 @@ const SignForm = () => {
                 )}
               </Field>
               {loading ? (
-                <CircularProgress />
+                <CustomLoading
+                  cCWidth={"100%"}
+                  cCHeight={"36.5px"}
+                  cWidth={"21px!important"}
+                  cHeight={"21px!important"}
+                />
               ) : (
                 <Button
                   type="submit"
+                  sx={{ textTransform: "none" }}
                   className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200"
                 >
                   {isSignInPage ? "Sign In" : "Sign Up"}

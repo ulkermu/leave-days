@@ -5,6 +5,7 @@ import CustomNavLink from "./CustomNavLink";
 import SignForm from "./SignForm";
 import ThemeSwitcher from "./ThemeSwitcher";
 import CustomField from "./CustomField";
+import CustomLoading from "./CustomLoading";
 
 export {
   Header,
@@ -14,4 +15,5 @@ export {
   SignForm,
   ThemeSwitcher,
   CustomField,
+  CustomLoading,
 };

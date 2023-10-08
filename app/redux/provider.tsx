@@ -12,7 +12,6 @@ const Providers = ({ children }: any) => {
     setMounted(true);
   }, []);
 
-  // if (!mounted) return <>{children}</>;
   if (!mounted) return null;
   return (
     <Provider store={store}>

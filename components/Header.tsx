@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "@/types";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 
 const Header = () => {
   const auth = useSelector((state: RootState) => state.auth.value);
@@ -18,16 +17,12 @@ const Header = () => {
   const logout = () => {
     logOut().then(() => {
       dispatch(setAuth(null));
-      toast.success("You're out of pack now!");
       router.push("/");
     });
   };
 
   const navLinks: NavLink[] = auth
-    ? [
-        { title: "Dashboard", href: "/dashboard" },
-        { title: "Play Ground", href: "/play-ground" },
-      ]
+    ? [{ title: "Dashboard", href: "/dashboard" }]
     : [{ title: "Home", href: "/" }];
 
   const signLinks = [
