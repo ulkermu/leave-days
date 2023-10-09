@@ -1,6 +1,6 @@
 ## The purpose of this project
 
-Creating a system where we can input the leave days used within the company and add or remove employees.
+I'm in the process of developing a system to manage and log the leave days utilized within the company, as well as to add or remove employees as needed. The aim is to transparently track and display which days have been taken off, the remaining leave days available, and to showcase all employees along with their leave days in an organized table format. This will assist the company in efficiently planning and adjusting leave schedules accordingly.
 
 ## Deployed on Vercel
 
