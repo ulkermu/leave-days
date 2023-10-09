@@ -9,14 +9,11 @@ import { darkTheme, lightTheme } from "@/theme";
 import { signIn, signUp } from "@/app/firabase";
 import { CustomField, CustomLoading } from ".";
 import { usePathname, useRouter } from "next/navigation";
-import { loginHandle } from "@/app/redux/features/auth/authSlice";
-import { useDispatch } from "react-redux";
 import { useState } from "react";
 
 const SignForm = () => {
   const { theme } = useTheme();
   const pathname = usePathname();
-  const dispatch = useDispatch();
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
@@ -48,7 +45,6 @@ const SignForm = () => {
               const user = await signIn(values.email, values.password);
               setLoading(false);
               if (user) {
-                dispatch(loginHandle(user));
                 router.push("/dashboard");
               }
             } else {

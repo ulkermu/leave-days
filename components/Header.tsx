@@ -6,13 +6,14 @@ import { logOut } from "@/app/firabase";
 import { CustomNavLink, ThemeSwitcher } from "@/components/index";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "@/types";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const pathname = usePathname();
+  console.log(pathname);
   const logout = async () => {
     await logOut();
     dispatch(logoutHandle());
@@ -36,7 +37,9 @@ const Header = () => {
             key={key}
             title={link.title}
             href={link.href}
-            containerStyles="dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold"
+            containerStyles={`dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold ${
+              link.href === pathname && "text-sky-600 dark:text-sky-400"
+            }`}
           />
         ))}
       </nav>
@@ -55,7 +58,9 @@ const Header = () => {
               key={key}
               title={link.title}
               href={link.href}
-              containerStyles="dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold"
+              containerStyles={`dark:hover:bg-slate-500 hover:bg-slate-100 ease-out duration-300 py-1 px-2 rounded-md font-bold ${
+                link.href === pathname && "text-sky-600 dark:text-sky-400"
+              }`}
             />
           ))}
         <ThemeSwitcher />

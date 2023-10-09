@@ -7,6 +7,8 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import toast from "react-hot-toast";
+import { store } from "./redux/store";
+import { loginHandle, logoutHandle } from "./redux/features/auth/authSlice";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -58,9 +60,9 @@ export const logOut = async () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    console.log(user);
+    store.dispatch(loginHandle(user));
   } else {
-    console.log("Kullanıcı oturumu kapattı");
+    store.dispatch(logoutHandle());
   }
 });
 
