@@ -3,23 +3,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface AuthState {
-  value: string;
+  user: any;
 }
 
+const isClient = typeof window !== "undefined";
+const storedUser = isClient ? localStorage.getItem("leave-user") : null;
+const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
 const initialState: AuthState = {
-  value: "",
+  user: parsedUser ?? false,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuth: (auth, action) => {
-      auth.value = action.payload;
+    loginHandle: (state, action) => {
+      localStorage.setItem("leave-user", JSON.stringify(action.payload));
+      state.user = action.payload;
+    },
+    logoutHandle: (state) => {
+      localStorage.removeItem("leave-user");
+      state.user = false;
     },
   },
 });
 
-export const { setAuth } = authSlice.actions;
+export const { loginHandle, logoutHandle } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from "@/theme";
 import { signIn, signUp } from "@/app/firabase";
 import { CustomField, CustomLoading } from ".";
 import { usePathname, useRouter } from "next/navigation";
-import { setAuth } from "@/app/redux/features/auth/authSlice";
+import { loginHandle } from "@/app/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 
@@ -46,13 +46,14 @@ const SignForm = () => {
             setLoading(true);
             if (isSignInPage) {
               const user = await signIn(values.email, values.password);
-              dispatch(setAuth(user?.uid));
               setLoading(false);
-              router.push("/dashboard");
+              if (user) {
+                dispatch(loginHandle(user));
+                router.push("/dashboard");
+              }
             } else {
               await signUp(values.email, values.password);
               setLoading(false);
-              router.push("/");
             }
           }}
         >

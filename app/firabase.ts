@@ -22,23 +22,6 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-export const getCurrentUser = async () => {
-  const promisifiedOnAuthStateChanged = (auth: any) => {
-    return new Promise((resolve, reject) => {
-      auth.onAuthStateChanged((user: any) => {
-        if (user) {
-          resolve(user.uid);
-        } else {
-          resolve(null);
-        }
-      });
-    });
-  };
-
-  const uid = await promisifiedOnAuthStateChanged(auth);
-  return uid;
-};
-
 export const signUp = async (email: string, password: string) => {
   try {
     const { user } = await createUserWithEmailAndPassword(
@@ -72,5 +55,13 @@ export const logOut = async () => {
     toast.error(error.message);
   }
 };
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log(user);
+  } else {
+    console.log("Kullanıcı oturumu kapattı");
+  }
+});
 
 export default app;
