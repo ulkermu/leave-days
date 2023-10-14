@@ -8,11 +8,8 @@ import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
 import { CustomField, CustomLoading } from ".";
 import { useState } from "react";
-import { EmployeeFormProps } from "@/types";
 
-const EmployeeForm: React.FC<EmployeeFormProps> = ({
-  handleCloseEmployeeModal,
-}) => {
+const EmployeeForm = () => {
   const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
 
@@ -34,15 +31,14 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
           initialValues={{
             name: "",
             surname: "",
-            age: null,
+            birth_date: "",
           }}
           validationSchema={schema}
           onSubmit={async (values) => {
             setLoading(true);
             setTimeout(() => {
-              console.log(values.name, values.surname, values.age);
+              console.log(values.name, values.surname, values.birth_date);
               setLoading(false);
-              handleCloseEmployeeModal();
             }, 100);
           }}
         >
@@ -70,12 +66,11 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({
                   />
                 )}
               </Field>
-              <Field name="age">
+              <Field name="birth_date">
                 {({ field, form }: any) => (
                   <CustomField
                     field={field}
                     label="Age"
-                    type="number"
                     error={form.errors.age && form.touched.age}
                     text={form.errors.age}
                   />
