@@ -9,8 +9,9 @@ import {
 import toast from "react-hot-toast";
 import { store } from "./redux/store";
 import { loginHandle, logoutHandle } from "./redux/features/auth/authSlice";
+import Cookies from "js-cookie";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
@@ -21,7 +22,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
 export const signUp = async (email: string, password: string) => {
@@ -31,7 +31,6 @@ export const signUp = async (email: string, password: string) => {
       email,
       password
     );
-    toast.success("You are a member now!");
     return user;
   } catch (error: any) {
     toast.error(error.message);
@@ -41,8 +40,17 @@ export const signUp = async (email: string, password: string) => {
 export const signIn = async (email: string, password: string) => {
   try {
     const { user } = await signInWithEmailAndPassword(auth, email, password);
-    toast.success("You're In!");
-    return user;
+    await user.getIdToken().then((jwt) => Cookies.set("token", jwt));
+
+    const serializableUser = {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      photoURL: user.photoURL,
+    };
+
+    return serializableUser;
   } catch (error: any) {
     toast.error(error.message);
   }
@@ -51,7 +59,7 @@ export const signIn = async (email: string, password: string) => {
 export const logOut = async () => {
   try {
     await signOut(auth);
-    toast.success("You're out of pack now!");
+    Cookies.remove("token");
     return true;
   } catch (error: any) {
     toast.error(error.message);
@@ -60,7 +68,15 @@ export const logOut = async () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    store.dispatch(loginHandle(user));
+    const serializableUser = {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      photoURL: user.photoURL,
+    };
+
+    store.dispatch(loginHandle(serializableUser));
   } else {
     store.dispatch(logoutHandle());
   }

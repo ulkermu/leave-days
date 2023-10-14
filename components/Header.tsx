@@ -13,7 +13,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
+
   const logout = async () => {
     await logOut();
     dispatch(logoutHandle());
