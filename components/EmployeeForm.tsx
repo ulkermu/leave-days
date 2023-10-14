@@ -16,12 +16,7 @@ const EmployeeForm = () => {
   const schema = Yup.object({
     name: Yup.string().required("Employee name is required."),
     surname: Yup.string().required("Employee surname is required."),
-    age: Yup.number()
-      .moreThan(
-        17,
-        "Users must be 18 years of age or older to utilize this service."
-      )
-      .required("Employee age is required"),
+    birth_date: Yup.string().required("Employee age is required"),
   });
 
   return (
@@ -70,6 +65,7 @@ const EmployeeForm = () => {
                 {({ field, form }: any) => (
                   <CustomField
                     field={field}
+                    type="text"
                     label="Age"
                     error={form.errors.age && form.touched.age}
                     text={form.errors.age}
