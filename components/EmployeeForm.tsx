@@ -8,8 +8,11 @@ import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
 import { CustomField, CustomLoading } from ".";
 import { useState } from "react";
+import { EmployeeFormProps } from "@/types";
 
-const EmployeeForm = () => {
+const EmployeeForm: React.FC<EmployeeFormProps> = ({
+  handleCloseEmployeeModal,
+}) => {
   const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +20,10 @@ const EmployeeForm = () => {
     name: Yup.string().required("Employee name is required."),
     surname: Yup.string().required("Employee surname is required."),
     age: Yup.number()
-      .moreThan(17, "Users must be 18 years of age or older to utilize this service.")
+      .moreThan(
+        17,
+        "Users must be 18 years of age or older to utilize this service."
+      )
       .required("Employee age is required"),
   });
 
@@ -33,7 +39,11 @@ const EmployeeForm = () => {
           validationSchema={schema}
           onSubmit={async (values) => {
             setLoading(true);
-            console.log(values.name, values.surname, values.age);
+            setTimeout(() => {
+              console.log(values.name, values.surname, values.age);
+              setLoading(false);
+              handleCloseEmployeeModal();
+            }, 100);
           }}
         >
           {(props) => (

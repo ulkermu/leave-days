@@ -23,3 +23,7 @@ export interface NavLink {
   title: string;
   href: string;
 }
+
+export interface EmployeeFormProps {
+  handleCloseEmployeeModal: () => void;
+}

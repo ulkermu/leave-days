@@ -47,7 +47,7 @@ const Employees = () => {
         onClose={handleCloseEmployeeModal}
       >
         <div className="bg-white dark:bg-slate-800 p-5 rounded-md">
-          <EmployeeForm />
+          <EmployeeForm handleCloseEmployeeModal={handleCloseEmployeeModal} />
         </div>
       </Modal>
     </main>
