@@ -21,7 +21,11 @@ const Header = () => {
   };
 
   const navLinks: NavLink[] = user
-    ? [{ title: "Dashboard", href: "/dashboard" }]
+    ? [
+        { title: "Dashboard", href: "/dashboard" },
+        { title: "Employees", href: "/employees" },
+        { title: "Leave Days", href: "/leave-days" },
+      ]
     : [{ title: "Home", href: "/" }];
 
   const signLinks = [

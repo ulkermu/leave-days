@@ -10,6 +10,7 @@ const CustomField = ({ field, label, type, error, text }: any) => {
       helperText={error && text}
       size="small"
       variant="standard"
+      autoComplete="off"
     />
   );
 };

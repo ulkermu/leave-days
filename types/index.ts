@@ -1,10 +1,11 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 
 export interface CustomButtonProps {
-  title: string;
+  title?: string;
   containerStyles?: string;
   handleClick?: MouseEventHandler<HTMLButtonElement>;
   disable?: boolean;
+  icon?: ReactNode; // ReactNode, React bileşeni, string, number, null, ve birkaç başka tipi kabul eder
 }
 
 export interface CustomNavLinkProps {
