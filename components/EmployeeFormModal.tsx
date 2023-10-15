@@ -22,7 +22,7 @@ const EmployeeFormModal = () => {
   const schema = Yup.object({
     name: Yup.string().required("Employee name is required."),
     surname: Yup.string().required("Employee surname is required."),
-    birth_date: Yup.string().required("Employee age is required"),
+    birth_date: Yup.string().required("Employee age is required."),
   });
 
   const handleClose = () => {
@@ -49,9 +49,6 @@ const EmployeeFormModal = () => {
                 setLoading(true);
                 setTimeout(() => {
                   console.log(values.name, values.surname, values.birth_date);
-                  values.name = "";
-                  values.surname = "";
-                  values.birth_date = "";
                   setLoading(false);
                   handleClose();
                 }, 100);

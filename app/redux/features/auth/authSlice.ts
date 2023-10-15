@@ -19,11 +19,15 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     loginHandle: (state, action) => {
-      localStorage.setItem("leave-user", JSON.stringify(action.payload));
+      if (isClient) {
+        localStorage.setItem("leave-user", JSON.stringify(action.payload));
+      }
       state.user = action.payload;
     },
     logoutHandle: (state) => {
-      localStorage.removeItem("leave-user");
+      if (isClient) {
+        localStorage.removeItem("leave-user");
+      }
       state.user = false;
     },
   },
