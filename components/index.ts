@@ -6,7 +6,7 @@ import SignForm from "./SignForm";
 import ThemeSwitcher from "./ThemeSwitcher";
 import CustomField from "./CustomField";
 import CustomLoading from "./CustomLoading";
-import EmployeeFormModal from "./EmployeeFormModal";
+import EmployeeForm from "./EmployeeForm";
 
 export {
   Header,
@@ -17,5 +17,5 @@ export {
   ThemeSwitcher,
   CustomField,
   CustomLoading,
-  EmployeeFormModal,
+  EmployeeForm,
 };
