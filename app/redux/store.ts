@@ -1,10 +1,11 @@
 "use client";
 import { configureStore } from "@reduxjs/toolkit";
-import { authReducer } from "@/app/redux/features";
+import { authReducer, employeeReducer } from "@/app/redux/features";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    employee: employeeReducer,
   },
 });
 

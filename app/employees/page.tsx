@@ -1,17 +1,13 @@
 "use client";
-import { CustomButton, EmployeeForm } from "@/components";
-import { Modal } from "@mui/material";
-import { useState } from "react";
+import { CustomButton, EmployeeFormModal } from "@/components";
+import { useDispatch } from "react-redux";
+import { setEmployeeModal } from "../redux/features/employee/employeeSlice";
 
 const Employees = () => {
-  const [employeeModal, setEmployeeModal] = useState<boolean>(false);
-
-  const handleCloseEmployeeModal = () => {
-    setEmployeeModal(false);
-  };
+  const dispatch = useDispatch();
 
   const handleAddEmploye = () => {
-    setEmployeeModal(true);
+    dispatch(setEmployeeModal(true));
   };
 
   return (
@@ -41,15 +37,7 @@ const Employees = () => {
           }
         />
       </div>
-      <Modal
-        className="max-w-[600px] w-full p-5 m-auto"
-        open={employeeModal}
-        onClose={handleCloseEmployeeModal}
-      >
-        <div className="bg-white dark:bg-slate-800 p-5 rounded-md">
-          <EmployeeForm />
-        </div>
-      </Modal>
+      <EmployeeFormModal />
     </main>
   );
 };
