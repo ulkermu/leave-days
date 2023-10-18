@@ -9,3 +9,17 @@ export const ConvertToDate = (isoString: string) => {
 
   return formattedDate;
 };
+
+export const ConvertToAge = (isoString: string) => {
+  const birthDate = new Date(isoString);
+
+  const currentDate = new Date();
+  let age = currentDate.getFullYear() - birthDate.getFullYear();
+  const m = currentDate.getMonth() - birthDate.getMonth();
+
+  if (m < 0 || (m === 0 && currentDate.getDate() < birthDate.getDate())) {
+    age--;
+  }
+
+  return age;
+};

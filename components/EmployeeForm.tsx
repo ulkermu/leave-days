@@ -16,6 +16,8 @@ import { addEmployee } from "@/app/firabase";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { AuthState } from "@/app/redux/features/auth/authSlice";
+import dayjs from "dayjs";
+import { ConvertToAge } from "@/utils/ConvertDate";
 
 const EmployeeForm = () => {
   const dispatch = useDispatch();
@@ -27,7 +29,17 @@ const EmployeeForm = () => {
   const schema = Yup.object({
     name: Yup.string().required("Employee name is required."),
     surname: Yup.string().required("Employee surname is required."),
-    start_date: Yup.date().required("Employee age is required."),
+    start_date: Yup.date().required("Employee start date is requiered."),
+    birth_date: Yup.date()
+      .required("Employee birth date is required.")
+      .test(
+        "is-older-than-18",
+        "Employee must be at least 18 years old.",
+        (value: any) => {
+          if (!value) return false;
+          return ConvertToAge(value) >= 18;
+        }
+      ),
   });
 
   const handleClose = () => {
@@ -41,12 +53,36 @@ const EmployeeForm = () => {
         initialValues={{
           name: "",
           surname: "",
-          start_date: new Date(),
+          start_date: dayjs(),
+          birth_date: dayjs().subtract(18, "year"),
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
           setLoading(true);
-          await addEmployee({ values, uid: user.uid });
+
+          // Convert Day.js object to JavaScript Date object
+          const startDateAsDate = values.start_date.toDate();
+          const birthDateAsDate = values.birth_date.toDate();
+
+          // Create a new object and update date fields with the converted values
+          const updatedValues = {
+            ...values,
+            start_date: startDateAsDate,
+            birth_date: birthDateAsDate,
+          };
+
+          // Add the updated values and user ID to the database
+          await addEmployee({
+            values: updatedValues,
+            uid: user.uid,
+            create_date: dayjs().toDate(),
+          });
+
+          console.log({
+            values: updatedValues,
+            uid: user.uid,
+            create_date: dayjs(),
+          });
           handleClose();
         }}
       >
@@ -74,12 +110,36 @@ const EmployeeForm = () => {
                 />
               )}
             </Field>
+            <Field name="birth_date">
+              {({ field, form }: any) => (
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Birth Date"
+                    maxDate={dayjs().subtract(18, "year")}
+                    format="DD/MM/YYYY"
+                    value={field.value} // Burada Formik'ten gelen value'yu set ediyoruz
+                    onChange={(date) => form.setFieldValue("birth_date", date)} // Burada kullanıcının seçtiği tarihi Formik state'ine aktarıyoruz
+                    slotProps={{
+                      textField: {
+                        property: { ...field },
+                        variant: "standard",
+                        error:
+                          form.errors.birth_date && form.touched.birth_date,
+                        helperText: form.errors.birth_date,
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              )}
+            </Field>
             <Field name="start_date">
               {({ field, form }: any) => (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Start Date"
                     format="DD/MM/YYYY"
+                    value={field.value} // Burada Formik'ten gelen value'yu set ediyoruz
+                    onChange={(date) => form.setFieldValue("start_date", date)} // Burada kullanıcının seçtiği tarihi Formik state'ine aktarıyoruz
                     slotProps={{
                       textField: {
                         property: { ...field },

@@ -88,6 +88,7 @@ export const addEmployee = async (data: Object) => {
 
 interface Employee {
   id: string;
+  create_date: string;
   [key: string]: any;
 }
 
@@ -117,19 +118,24 @@ onAuthStateChanged(auth, (user) => {
           (employees, employee) => {
             const data = employee.data();
 
-            if (!data.values || data.values.start_date === undefined) {
-              console.warn("start_date value undefined!", data);
-              return employees; // Bu employee için işlem yapmadan devam ediyoruz.
-            }
+            const { birth_date, start_date, ...restOfData } = data.values;
 
-            const { start_date, ...restOfData } = data.values;
-            const transformedStartDate = start_date.toDate();
-            const dateString = start_date.toDate().toISOString();
+            const startDateString = start_date.toDate().toISOString();
+            const birthDateString = birth_date.toDate().toISOString();
+            const createDateString = data.create_date.toDate().toISOString();
 
-            if (!(transformedStartDate instanceof Date)) {
+            if (
+              !(
+                start_date.toDate() instanceof Date ||
+                birth_date.toDate() instanceof Date ||
+                data.create_date.toDate() instanceof Date
+              )
+            ) {
               console.error(
-                "Dönüştürülen tarih geçerli bir Date nesnesi değil!",
-                transformedStartDate
+                "Converted date not a validated date object!",
+                start_date.toDate(),
+                birth_date.toDate(),
+                data.create_date.toDate()
               );
               return employees;
             }
@@ -139,9 +145,11 @@ onAuthStateChanged(auth, (user) => {
               {
                 values: {
                   ...restOfData,
-                  start_date: dateString,
+                  start_date: startDateString,
+                  birth_date: birthDateString,
                 },
                 id: employee.id,
+                create_date: createDateString,
               },
             ];
           },

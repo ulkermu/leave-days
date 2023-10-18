@@ -5,7 +5,7 @@ import { setEmployeeModal } from "../redux/features/employee/employeeSlice";
 import { Modal } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { ConvertToDate } from "@/utils/ConvertDate";
+import { ConvertToAge, ConvertToDate } from "@/utils/ConvertDate";
 
 const Employees = () => {
   const employee = useSelector((state: RootState) => state.employee);
@@ -64,7 +64,8 @@ const Employees = () => {
         {employees?.map((emp: any) => (
           <div key={emp.id}>
             {emp.values.name} {emp.values.surname} -{" "}
-            {ConvertToDate(emp.values.start_date)}
+            {ConvertToDate(emp.values.start_date)} -{" "}
+            {ConvertToAge(emp.values.birth_date)}
           </div>
         ))}
       </div>
