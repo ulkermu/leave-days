@@ -10,6 +10,8 @@ import { CustomField, CustomLoading } from ".";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setEmployeeModal } from "@/app/redux/features/employee/employeeSlice";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 const EmployeeForm = () => {
   const dispatch = useDispatch();
@@ -19,7 +21,7 @@ const EmployeeForm = () => {
   const schema = Yup.object({
     name: Yup.string().required("Employee name is required."),
     surname: Yup.string().required("Employee surname is required."),
-    birth_date: Yup.date().required("Employee age is required."),
+    start_date: Yup.date().required("Employee age is required."),
   });
 
   const handleClose = () => {
@@ -32,13 +34,13 @@ const EmployeeForm = () => {
         initialValues={{
           name: "",
           surname: "",
-          birth_date: "",
+          start_date: new Date(),
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
           setLoading(true);
           setTimeout(() => {
-            console.log(values.name, values.surname, values.birth_date);
+            console.log(values);
             setLoading(false);
             handleClose();
           }, 100);
@@ -68,15 +70,26 @@ const EmployeeForm = () => {
                 />
               )}
             </Field>
-            <Field name="birth_date">
+            <Field name="start_date">
               {({ field, form }: any) => (
-                <CustomField
-                  field={field}
-                  label="Birth Date"
-                  type="text"
-                  error={form.errors.surname && form.touched.surname}
-                  text={form.errors.surname}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DatePicker
+                    label="Start Date"
+                    format="DD/MM/YYYY"
+                    slotProps={{
+                      textField: {
+                        property: { ...field },
+                        variant: "standard",
+                        error:
+                          form.errors.start_date && form.touched.start_date,
+                        helperText:
+                          form.errors.start_date &&
+                          form.touched.start_date &&
+                          form.errors.start_date,
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
               )}
             </Field>
             <div className="flex gap-2.5 w-full">
