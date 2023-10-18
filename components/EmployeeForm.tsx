@@ -12,9 +12,15 @@ import { useDispatch } from "react-redux";
 import { setEmployeeModal } from "@/app/redux/features/employee/employeeSlice";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { addEmployee } from "@/app/firabase";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/redux/store";
+import { AuthState } from "@/app/redux/features/auth/authSlice";
 
 const EmployeeForm = () => {
   const dispatch = useDispatch();
+  const { user }: AuthState = useSelector((state: RootState) => state.auth);
+
   const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
 
@@ -25,6 +31,7 @@ const EmployeeForm = () => {
   });
 
   const handleClose = () => {
+    setLoading(false);
     dispatch(setEmployeeModal(false));
   };
 
@@ -39,11 +46,8 @@ const EmployeeForm = () => {
         validationSchema={schema}
         onSubmit={async (values) => {
           setLoading(true);
-          setTimeout(() => {
-            console.log(values);
-            setLoading(false);
-            handleClose();
-          }, 100);
+          await addEmployee({ values, uid: user.uid });
+          handleClose();
         }}
       >
         {(props) => (

@@ -5,9 +5,15 @@ import { setEmployeeModal } from "../redux/features/employee/employeeSlice";
 import { Modal } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { ConvertToDate } from "@/utils/ConvertDate";
 
 const Employees = () => {
-  const { modal } = useSelector((state: RootState) => state.employee);
+  const employee = useSelector((state: RootState) => state.employee);
+  const modal = employee.modal;
+  const employees = employee.employees;
+
+  console.log(employees);
+
   const dispatch = useDispatch();
 
   const handleAddEmploye = () => {
@@ -54,6 +60,14 @@ const Employees = () => {
           </svg>
         }
       />
+      <div>
+        {employees?.map((emp: any) => (
+          <div key={emp.id}>
+            {emp.values.name} {emp.values.surname} -{" "}
+            {ConvertToDate(emp.values.start_date)}
+          </div>
+        ))}
+      </div>
     </main>
   );
 };
