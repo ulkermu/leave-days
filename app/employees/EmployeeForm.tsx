@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
-import { CustomField, CustomLoading } from "../../components";
+import { CustomButton, CustomField, CustomLoading } from "../../components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setEmployeeModal } from "@/app/redux/features/employee/employeeSlice";
@@ -76,12 +76,6 @@ const EmployeeForm = () => {
             values: updatedValues,
             uid: user.uid,
             create_date: dayjs().toDate(),
-          });
-
-          console.log({
-            values: updatedValues,
-            uid: user.uid,
-            create_date: dayjs(),
           });
           handleClose();
         }}
@@ -156,15 +150,29 @@ const EmployeeForm = () => {
                 </LocalizationProvider>
               )}
             </Field>
-            <div className="flex gap-2.5 w-full">
-              <Button
+            <div className="flex gap-2.5 w-full justify-end">
+              <CustomButton
+                title="Cancel"
+                handleClick={handleClose}
+                containerStyles="text-red-500 dark:text-red-300 bg-red-50 hover:bg-red-100"
                 type="button"
-                sx={{ textTransform: "none" }}
-                onClick={handleClose}
-                className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200 w-full"
-              >
-                Cancel
-              </Button>
+                icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                }
+              />
               {loading ? (
                 <CustomLoading
                   cCWidth={"100%"}
@@ -173,13 +181,27 @@ const EmployeeForm = () => {
                   cHeight={"21px!important"}
                 />
               ) : (
-                <Button
+                <CustomButton
+                  title="Add"
+                  containerStyles="text-green-500 dark:text-green-300 bg-green-50 hover:bg-green-100"
                   type="submit"
-                  sx={{ textTransform: "none" }}
-                  className="dark:bg-slate-600 dark:hover:bg-slate-800 bg-blue-500 hover:bg-blue-600 ease-out duration-150 py-1 px-2 rounded-md normal-case text-slate-200 dark:text-slate-200 w-full"
-                >
-                  Add
-                </Button>
+                  icon={
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
+                      />
+                    </svg>
+                  }
+                />
               )}
             </div>
           </Form>

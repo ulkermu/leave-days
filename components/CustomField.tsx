@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 
-const CustomField = ({ field, label, type, error, text }: any) => {
+const CustomField = ({ field, label, type, error, text, values }: any) => {
   return (
     <TextField
       {...field}

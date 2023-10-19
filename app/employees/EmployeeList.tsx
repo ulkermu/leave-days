@@ -2,6 +2,12 @@
 
 import {
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   PaletteMode,
   ThemeProvider,
@@ -18,10 +24,22 @@ import { RootState } from "../redux/store";
 import { ConvertToAge, ConvertToYearsWorked } from "@/utils/ConvertDate";
 import { useDispatch } from "react-redux";
 import { useTheme } from "next-themes";
+import { deleteEmployee } from "../firabase";
+import {
+  setEmpID,
+  setEmpRow,
+  setEmployeeEditModal,
+} from "../redux/features/employee/employeeSlice";
+import { useState } from "react";
+import { CustomButton } from "@/components";
+import EditEmployeeForm from "./EditEmployeeForm";
 
 const EmployeeList = () => {
   const employee = useSelector((state: RootState) => state.employee);
   const employees = employee.employees;
+  const empID = employee.empID;
+
+  const [deleteDialog, setDeleteDialog] = useState(false);
 
   const isDark = useTheme();
   const mode: PaletteMode = isDark.theme === "dark" ? "dark" : "light";
@@ -34,12 +52,24 @@ const EmployeeList = () => {
 
   const dispatch = useDispatch();
 
-  const handleDeleteEmployee = () => {
-    console.log("Will be fired, don't worry");
+  const handleDeleteEmployee = async () => {
+    await deleteEmployee(empID);
+    dispatch(setEmpID(""));
+    setDeleteDialog(false);
   };
 
-  const handleEditEmployee = () => {
-    console.log("Will be edit");
+  const handleOpenDialog = (id: any) => {
+    dispatch(setEmpID(id));
+    setDeleteDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDeleteDialog(false);
+  };
+
+  const handleEditEmployee = (data: any) => {
+    dispatch(setEmployeeEditModal(true));
+    dispatch(setEmpRow(data));
   };
 
   const columns: GridColDef[] = [
@@ -81,7 +111,7 @@ const EmployeeList = () => {
       width: 80,
       renderCell: (params: GridRenderCellParams) => (
         <>
-          <IconButton onClick={handleEditEmployee}>
+          <IconButton onClick={() => handleEditEmployee(params.row)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -97,7 +127,7 @@ const EmployeeList = () => {
               />
             </svg>
           </IconButton>
-          <IconButton onClick={handleDeleteEmployee}>
+          <IconButton onClick={() => handleOpenDialog(params.row.id)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -123,13 +153,70 @@ const EmployeeList = () => {
     lastName: emp.values.surname,
     firstName: emp.values.name,
     age: ConvertToAge(emp.values.birth_date),
+    birth_date: emp.values.birth_date,
     start_date: emp.values.start_date,
     years_worked: emp.values.start_date,
   }));
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Box>
+        <Dialog open={deleteDialog} onClose={handleCloseDialog}>
+          <DialogTitle id="alert-dialog-title">
+            {"Delete employee?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              We will remove this employee from the system, which means any
+              changes you made related to this user will be lost.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <CustomButton
+              title="Disagree"
+              handleClick={handleCloseDialog}
+              containerStyles="text-red-500 dark:text-red-300 bg-red-50 hover:bg-red-100"
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              }
+            />
+            <CustomButton
+              title="Agree"
+              handleClick={handleDeleteEmployee}
+              containerStyles="text-green-500 dark:text-green-300 bg-green-50 hover:bg-green-100"
+              icon={
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              }
+            />
+          </DialogActions>
+        </Dialog>
+        <EditEmployeeForm />
         <DataGrid
           rows={rows}
           columns={columns}

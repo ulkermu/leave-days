@@ -29,7 +29,6 @@ const Employees = () => {
         onClose={handleClose}
       >
         <div className="bg-white dark:bg-slate-800 p-5 rounded-md">
-          <h6>Add Employee</h6>
           <EmployeeForm />
         </div>
       </Modal>
@@ -40,6 +39,7 @@ const Employees = () => {
         containerStyles="bg-blue-400 text-white hover:bg-blue-600"
         handleClick={handleAddEmploye}
         disable={false}
+        type="button"
         icon={
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ const Employees = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-4 h-4"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"

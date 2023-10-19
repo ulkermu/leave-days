@@ -13,10 +13,12 @@ import Cookies from "js-cookie";
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getFirestore,
   onSnapshot,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { setEmployees } from "./redux/features/employee/employeeSlice";
@@ -79,10 +81,27 @@ export const logOut = async () => {
 
 export const addEmployee = async (data: Object) => {
   try {
-    addDoc(collection(db, "employees"), data);
+    return await addDoc(collection(db, "employees"), data);
   } catch (error: any) {
     toast.error(error.message);
-    console.log(error);
+  }
+};
+
+export const editEmployee = async (id: any, data: any) => {
+  try {
+    const docRef = doc(db, "employees", id);
+    const result = await updateDoc(docRef, data);
+    return result;
+  } catch (error: any) {
+    toast.error(error.message);
+  }
+};
+
+export const deleteEmployee = async (id: any) => {
+  try {
+    return await deleteDoc(doc(db, "employees", id));
+  } catch (error: any) {
+    toast.error(error.message);
   }
 };
 
