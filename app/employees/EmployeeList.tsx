@@ -2,26 +2,82 @@
 
 import {
   Box,
-  IconButton,
+  Button,
   PaletteMode,
   ThemeProvider,
   createTheme,
 } from "@mui/material";
 import {
   DataGrid,
+  GridActionsCellItem,
   GridColDef,
-  GridRenderCellParams,
+  GridEventListener,
+  GridRowEditStopReasons,
+  GridRowId,
+  GridRowModel,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowsProp,
+  GridToolbarContainer,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
+import { randomId } from "@mui/x-data-grid-generator";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { ConvertToAge, ConvertToYearsWorked } from "@/utils/ConvertDate";
 import { useDispatch } from "react-redux";
 import { useTheme } from "next-themes";
+import AddIcon from "@mui/icons-material/Add";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
+import { useEffect, useState } from "react";
+
+interface EditToolbarProps {
+  setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
+  setRowModesModel: (
+    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
+  ) => void;
+}
+
+function EditToolbar(props: EditToolbarProps) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
+    const id = randomId();
+    setRows((oldRows) => [...oldRows, { id, name: "", age: "", isNew: true }]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+    }));
+  };
+
+  return (
+    <GridToolbarContainer>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        Add record
+      </Button>
+    </GridToolbarContainer>
+  );
+}
 
 const EmployeeList = () => {
   const employee = useSelector((state: RootState) => state.employee);
   const employees = employee.employees;
+
+  const initialRows = employees.map((emp: any) => ({
+    id: emp.id,
+    lastName: emp.values.surname,
+    firstName: emp.values.name,
+    age: ConvertToAge(emp.values.birth_date),
+    start_date: emp.values.start_date,
+    years_worked: emp.values.start_date,
+  }));
+
+  const [rows, setRows] = useState<any>(initialRows);
+  const [rowModesModel, setRowModesModel] = useState<GridRowModesModel>({});
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const isDark = useTheme();
   const mode: PaletteMode = isDark.theme === "dark" ? "dark" : "light";
@@ -40,27 +96,50 @@ const EmployeeList = () => {
 
   const columns: GridColDef[] = [
     {
-      field: "delete",
-      headerName: "Delete",
-      width: 60,
-      renderCell: (params: GridRenderCellParams) => (
-        <IconButton onClick={handleDeleteEmployee}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="w-4 h-4 text-red-600 dark:text-red-400"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
-            />
-          </svg>
-        </IconButton>
-      ),
+      field: "actions",
+      type: "actions",
+      headerName: "Actions",
+      width: 100,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              sx={{
+                color: "primary.main",
+              }}
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
     },
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -100,14 +179,55 @@ const EmployeeList = () => {
     },
   ];
 
-  const rows = employees.map((emp: any) => ({
-    id: emp.id,
-    lastName: emp.values.surname,
-    firstName: emp.values.name,
-    age: ConvertToAge(emp.values.birth_date),
-    start_date: emp.values.start_date,
-    years_worked: emp.values.start_date,
-  }));
+  const handleRowEditStop: GridEventListener<"rowEditStop"> = (
+    params,
+    event
+  ) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id: GridRowId) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id: GridRowId) => () => {
+    setRows(rows.filter((row: any) => row.id !== id));
+  };
+
+  const handleCancelClick = (id: GridRowId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = rows.find((row: any) => row.id === id);
+    if (editedRow!.isNew) {
+      setRows(rows.filter((row: any) => row.id !== id));
+    }
+  };
+
+  const processRowUpdate = (newRow: GridRowModel) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row: any) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
+  useEffect(() => {
+    if (initialRows?.length > 0 && !mounted) {
+      setRows(initialRows);
+      setMounted(true);
+    }
+  }, [mounted, initialRows?.length]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -134,6 +254,17 @@ const EmployeeList = () => {
           checkboxSelection
           disableRowSelectionOnClick
           className="dark:text-white"
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          slots={{
+            toolbar: EditToolbar,
+          }}
+          slotProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
         />
       </Box>
     </ThemeProvider>
