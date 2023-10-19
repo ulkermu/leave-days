@@ -23,3 +23,40 @@ export const ConvertToAge = (isoString: string) => {
 
   return age;
 };
+
+export const ConvertToYearsWorked = (isoString: string) => {
+  const birthDate = new Date(isoString);
+  const currentDate = new Date();
+
+  let years = currentDate.getFullYear() - birthDate.getFullYear();
+  let months = currentDate.getMonth() - birthDate.getMonth();
+
+  if (currentDate.getDate() < birthDate.getDate()) {
+    months--;
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  let result = "";
+
+  // Add years to the result
+  if (years > 0) {
+    result += years === 1 ? "1 year" : `${years} years`;
+  }
+
+  // Add months to the result
+  if (months > 0) {
+    if (result) result += " "; // if there's a year value, add a space
+    result += months === 1 ? "1 month" : `${months} months`;
+  }
+
+  // If the duration is only a few months (e.g., 2 months), then mention it as a trial period.
+  if (years === 0 && months <= 2) {
+    return "Trial Period";
+  }
+
+  return result;
+};

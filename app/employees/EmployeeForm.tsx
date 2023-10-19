@@ -6,7 +6,7 @@ import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
-import { CustomField, CustomLoading } from ".";
+import { CustomField, CustomLoading } from "../../components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setEmployeeModal } from "@/app/redux/features/employee/employeeSlice";
