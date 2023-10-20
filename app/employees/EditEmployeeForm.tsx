@@ -17,8 +17,10 @@ import { RootState } from "../redux/store";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useTheme } from "next-themes";
+import { editEmployee } from "../firabase";
 
 interface EmployeeRow {
+  id?: string;
   firstName?: string;
   lastName?: string;
   start_date?: any;
@@ -65,19 +67,22 @@ const EditEmployeeForm = () => {
               birth_date: dayjs(row.birth_date),
             }}
             onSubmit={async (values) => {
-
               // Convert Day.js object to JavaScript Date object
               const startDateAsDate = values.start_date.toDate();
               const birthDateAsDate = values.birth_date.toDate();
 
               // Create a new object and update date fields with the converted values
               const updatedValues = {
-                ...values,
-                start_date: startDateAsDate,
-                birth_date: birthDateAsDate,
+                values: {
+                  name: values.name,
+                  surname: values.surname,
+                  start_date: startDateAsDate,
+                  birth_date: birthDateAsDate,
+                },
               };
-              
-              console.log(updatedValues);
+
+              await editEmployee(row?.id, updatedValues);
+              handleClose();
             }}
           >
             {(props) => (
@@ -200,7 +205,7 @@ const EditEmployeeForm = () => {
                     />
                   ) : (
                     <CustomButton
-                      title="Add"
+                      title="Update"
                       containerStyles="text-green-500 dark:text-green-300 bg-green-50 hover:bg-green-100"
                       type="submit"
                       icon={

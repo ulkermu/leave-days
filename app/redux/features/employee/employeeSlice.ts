@@ -17,6 +17,7 @@ const initialState: EmployeeState = {
   employees: [],
   empID: "",
   empRow: {
+    id: "",
     firstName: "",
     lastName: "",
     start_date: dayjs().toISOString(),

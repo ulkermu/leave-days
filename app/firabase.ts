@@ -88,13 +88,8 @@ export const addEmployee = async (data: Object) => {
 };
 
 export const editEmployee = async (id: any, data: any) => {
-  try {
-    const docRef = doc(db, "employees", id);
-    const result = await updateDoc(docRef, data);
-    return result;
-  } catch (error: any) {
-    toast.error(error.message);
-  }
+  const docRef = doc(db, "employees", id);
+  await updateDoc(docRef, data);
 };
 
 export const deleteEmployee = async (id: any) => {
