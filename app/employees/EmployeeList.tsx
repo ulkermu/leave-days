@@ -70,7 +70,6 @@ const EmployeeList = () => {
   const handleEditEmployee = (data: any) => {
     dispatch(setEmployeeEditModal(true));
     dispatch(setEmpRow(data));
-    console.log(data);
   };
 
   const columns: GridColDef[] = [
