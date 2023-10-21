@@ -1,6 +1,15 @@
+import { Timestamp } from "firebase/firestore";
 import { MouseEventHandler, ReactNode } from "react";
 
 type ButtonType = "button" | "submit" | "reset";
+
+export type EmployeeLeave = {
+  id: string;
+  employeeID: string;
+  leave_start_date: any;
+  leave_end_date: any;
+  leave_reason: string;
+};
 
 export interface CustomButtonProps {
   title?: string;

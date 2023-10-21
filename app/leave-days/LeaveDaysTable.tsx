@@ -18,9 +18,19 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useTheme } from "next-themes";
-import { CustomButton } from "@/components";
+import { useDispatch } from "react-redux";
+import {
+  setEmpID,
+  setPastLeaves,
+  setRegularLeaveModal,
+} from "../redux/features/employee/employeeSlice";
+import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+import { EmployeeLeave } from "@/types";
+import toast from "react-hot-toast";
 
 const LeaveDaysTable = () => {
+  const db = getFirestore();
+  const dispatch = useDispatch();
   const isDark = useTheme();
   const mode: PaletteMode = isDark.theme === "dark" ? "dark" : "light";
 
@@ -42,6 +52,32 @@ const LeaveDaysTable = () => {
     start_date: emp.values.start_date,
     years_worked: emp.values.start_date,
   }));
+
+  const handleAddLeaveDay = (data: any) => {
+    dispatch(setRegularLeaveModal(true));
+    dispatch(setEmpID(data.id));
+  };
+
+  const handleReviewPastLeaves = async (data: any) => {
+    const leaves: EmployeeLeave[] = [];
+
+    try {
+      const q = query(collection(db, "employees", data.id, "leaves"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        leaves.push({
+          id: doc.id,
+          ...(doc.data() as Omit<EmployeeLeave, "id">),
+        });
+      });
+      if (leaves.length > 0) {
+        return dispatch(setPastLeaves({ modal: true, data: leaves }));
+      } else return toast.error("This employee hasn't taken any leave so far.");
+    } catch (error: any) {
+      toast.error("Error fetching employee leaves: ", error);
+      return dispatch(setPastLeaves([]));
+    }
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 1, minWidth: 90 },
@@ -95,7 +131,7 @@ const LeaveDaysTable = () => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Leave Day">
-            <IconButton>
+            <IconButton onClick={() => handleAddLeaveDay(params.row)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -112,8 +148,8 @@ const LeaveDaysTable = () => {
               </svg>
             </IconButton>
           </Tooltip>
-          <Tooltip title="Past leaves">
-            <IconButton>
+          <Tooltip title="Past Leaves">
+            <IconButton onClick={() => handleReviewPastLeaves(params.row)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
