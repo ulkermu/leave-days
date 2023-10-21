@@ -65,8 +65,6 @@ const AddRegularLeave = () => {
     setLoading(false);
   };
 
-  console.log(empID);
-
   return (
     <ThemeProvider theme={theme}>
       <Modal

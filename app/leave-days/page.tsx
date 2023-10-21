@@ -1,6 +1,7 @@
 import { Toaster } from "react-hot-toast";
 import AddRegularLeave from "./AddRegularLeave";
 import LeaveDaysTable from "./LeaveDaysTable";
+import ReviewPastLeaves from "./ReviewPastLeaves";
 
 const LeaveDays = () => {
   return (
@@ -9,6 +10,7 @@ const LeaveDays = () => {
       <div className="flex flex-col gap-5 w-full">
         <LeaveDaysTable />
         <AddRegularLeave />
+        <ReviewPastLeaves />
       </div>
     </main>
   );

@@ -21,7 +21,8 @@ import { useTheme } from "next-themes";
 import { useDispatch } from "react-redux";
 import {
   setEmpID,
-  setPastLeaves,
+  setPastLeavesData,
+  setPastLeavesModal,
   setRegularLeaveModal,
 } from "../redux/features/employee/employeeSlice";
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
@@ -71,11 +72,18 @@ const LeaveDaysTable = () => {
         });
       });
       if (leaves.length > 0) {
-        return dispatch(setPastLeaves({ modal: true, data: leaves }));
+        const serializedLeaves = leaves.map((leave) => ({
+          ...leave,
+          leave_start_date: leave.leave_start_date.toDate().toISOString(),
+          leave_end_date: leave.leave_end_date.toDate().toISOString(),
+        }));
+        dispatch(setPastLeavesData(serializedLeaves));
+        dispatch(setPastLeavesModal(true));
       } else return toast.error("This employee hasn't taken any leave so far.");
     } catch (error: any) {
       toast.error("Error fetching employee leaves: ", error);
-      return dispatch(setPastLeaves([]));
+      dispatch(setPastLeavesData([]));
+      dispatch(setPastLeavesModal(false));
     }
   };
 
