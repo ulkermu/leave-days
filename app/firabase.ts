@@ -100,6 +100,13 @@ export const deleteEmployee = async (id: any) => {
   }
 };
 
+export const addEmployeeLeave = async (data: Object, id: any) => {
+  const employeeRef = doc(db, "employees", id);
+  const leavesSubcollectionRef = collection(employeeRef, "leaves");
+
+  return await addDoc(leavesSubcollectionRef, data);
+};
+
 interface Employee {
   id: string;
   create_date: string;
@@ -121,7 +128,7 @@ onAuthStateChanged(auth, (user) => {
     if (!isTokenExist) {
       user.getIdToken().then((jwt) => {
         Cookies.set("token", jwt);
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 0);
       });
     }
 

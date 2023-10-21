@@ -32,8 +32,6 @@ const Employees = () => {
           <EmployeeForm />
         </div>
       </Modal>
-
-      <h6 className="text-center">Employee List</h6>
       <CustomButton
         title="Add Employee"
         containerStyles="bg-blue-400 text-white hover:bg-blue-600"
