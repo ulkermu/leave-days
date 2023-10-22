@@ -1,40 +1,26 @@
 "use client";
 
-import {
-  Modal,
-  PaletteMode,
-  TextField,
-  ThemeProvider,
-  createTheme,
-} from "@mui/material";
+import { Modal, PaletteMode, ThemeProvider, createTheme } from "@mui/material";
+import { useTheme } from "next-themes";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import {
+  setAnnualLeaveData,
+  setAnnualLeaveModal,
   setEmpID,
-  setRegularLeaveModal,
 } from "../redux/features/employee/employeeSlice";
-import { useDispatch } from "react-redux";
-import { addEmployeeLeave } from "../firabase";
 import { Field, Form, Formik } from "formik";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { CustomButton, CustomLoading } from "@/components";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useTheme } from "next-themes";
-import { CustomButton, CustomLoading } from "@/components";
-import { useState } from "react";
-import { collection, getDocs, getFirestore, query } from "firebase/firestore";
-import toast from "react-hot-toast";
-import { EmployeeLeave } from "@/types";
 
-const AddRegularLeave = () => {
-  const db = getFirestore();
+const AddAnnualLeave = () => {
+  const [loading, setLoading] = useState(false);
   const isDark = useTheme();
   const mode: PaletteMode = isDark.theme === "dark" ? "dark" : "light";
-
-  const dispatch = useDispatch();
-  const employee = useSelector((state: RootState) => state.employee);
-  const regularLeaveModal = employee.regularLeaveModal;
-  const empID = employee.empID;
 
   const theme = createTheme({
     palette: {
@@ -42,12 +28,18 @@ const AddRegularLeave = () => {
     },
   });
 
+  const dispatch = useDispatch();
+  const employee = useSelector((state: RootState) => state.employee);
+  const annualLeaveModal = employee.annualLeaveModal;
+  const annualLeaveData = employee.annualLeaveData;
+  const empID = employee.empID;
+
   const isFormInvalid = (values: any) => {
     const currentDate = dayjs().add(-1, "day");
     const oneDayLater = dayjs();
 
-    const leaveStartDate = dayjs(values.leave_start_date);
-    const leaveEndDate = dayjs(values.leave_end_date);
+    const leaveStartDate = dayjs(values.annual_leave_start_date);
+    const leaveEndDate = dayjs(values.annual_leave_end_date);
 
     return (
       values.leave_reason === "" ||
@@ -57,10 +49,8 @@ const AddRegularLeave = () => {
     );
   };
 
-  const [loading, setLoading] = useState(false);
-
   const handleClose = () => {
-    dispatch(setRegularLeaveModal(false));
+    dispatch(setAnnualLeaveModal(false));
     dispatch(setEmpID(""));
     setLoading(false);
   };
@@ -68,79 +58,28 @@ const AddRegularLeave = () => {
   return (
     <ThemeProvider theme={theme}>
       <Modal
-        className="h-screen flex items-center w-full justify-center"
-        open={regularLeaveModal}
+        open={annualLeaveModal}
         onClose={handleClose}
+        className="h-screen flex items-center w-full justify-center"
       >
         <div className="m-auto max-w-xl	w-full bg-white dark:bg-slate-700 p-5 rounded-md m-5">
           <Formik
             initialValues={{
-              leave_start_date: dayjs(),
-              leave_end_date: dayjs().add(1, "day"),
-              leave_reason: "",
+              annual_leave_start_date: dayjs(),
+              annual_leave_end_date: dayjs().add(1, "day"),
             }}
             onSubmit={async (values) => {
               setLoading(true);
 
-              const leaveStartDate = values.leave_start_date.toDate();
-              const leaveEndDate = values.leave_end_date.toDate();
-
-              try {
-                // Query the employee's leaves.
-                const q = query(collection(db, "employees", empID, "leaves"));
-                const querySnapshot = await getDocs(q);
-
-                let isLeaveExist = false; // this variable is to check if there's a leave on the specified dates
-
-                querySnapshot.forEach((doc) => {
-                  const existingLeave = doc.data() as Omit<EmployeeLeave, "id">;
-
-                  // Convert Firestore timestamp to JavaScript Date object
-                  const existingStartDate =
-                    existingLeave.leave_start_date.toDate();
-                  const existingEndDate = existingLeave.leave_end_date.toDate();
-
-                  // Check all possible overlaps
-                  if (
-                    (leaveStartDate >= existingStartDate &&
-                      leaveStartDate <= existingEndDate) || // Scenario 2
-                    (leaveEndDate >= existingStartDate &&
-                      leaveEndDate <= existingEndDate) || // Scenario 3
-                    (leaveStartDate <= existingStartDate &&
-                      leaveEndDate >= existingEndDate) // Scenario 4
-                  ) {
-                    isLeaveExist = true;
-                  }
-                });
-
-                if (isLeaveExist) {
-                  // If there's a leave on the specified dates, show error message.
-                  toast.error(
-                    "The employee already has a leave for the specified date."
-                  );
-                } else {
-                  // If not, add the new leave.
-                  await addEmployeeLeave(
-                    {
-                      leave_start_date: leaveStartDate,
-                      leave_end_date: leaveEndDate,
-                      leave_reason: values.leave_reason,
-                    },
-                    empID
-                  );
-                  toast.success("Leave added successfully!");
-                  handleClose();
-                }
-              } catch (error: any) {
-                toast.error(`Error: ${error.message}`);
-              }
-
-              setLoading(false);
+              const annualLeaveStartDate =
+                values.annual_leave_start_date.toDate();
+              const annualLeaveEndDate = values.annual_leave_end_date.toDate();
+              console.log(values);
             }}
           >
             {(props) => (
               <Form className="w-full flex flex-col gap-2.5">
-                <Field name="leave_start_date">
+                <Field name="annual_leave_start_date">
                   {({ field, form }: any) => (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
@@ -149,23 +88,23 @@ const AddRegularLeave = () => {
                         minDate={dayjs()}
                         value={field.value}
                         onChange={(date) =>
-                          form.setFieldValue("leave_start_date", date)
+                          form.setFieldValue("annual_leave_start_date", date)
                         }
                         slotProps={{
                           textField: {
                             property: { ...field },
                             variant: "standard",
                             error:
-                              form.errors.leave_start_date &&
-                              form.touched.leave_start_date,
-                            helperText: form.errors.leave_start_date,
+                              form.errors.annual_leave_start_date &&
+                              form.touched.annual_leave_start_date,
+                            helperText: form.errors.annual_leave_start_date,
                           },
                         }}
                       />
                     </LocalizationProvider>
                   )}
                 </Field>
-                <Field name="leave_end_date">
+                <Field name="annual_leave_end_date">
                   {({ field, form }: any) => (
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
@@ -175,40 +114,20 @@ const AddRegularLeave = () => {
                         disablePast
                         value={field.value}
                         onChange={(date) =>
-                          form.setFieldValue("leave_end_date", date)
+                          form.setFieldValue("annual_leave_end_date", date)
                         }
                         slotProps={{
                           textField: {
                             property: { ...field },
                             variant: "standard",
                             error:
-                              form.errors.leave_end_date &&
-                              form.touched.leave_end_date,
-                            helperText: form.errors.leave_end_date,
+                              form.errors.annual_leave_end_date &&
+                              form.touched.annual_leave_end_date,
+                            helperText: form.errors.annual_leave_end_date,
                           },
                         }}
                       />
                     </LocalizationProvider>
-                  )}
-                </Field>
-                <Field name="leave_reason">
-                  {({ field, form }: any) => (
-                    <TextField
-                      {...field}
-                      label="Leave Reason"
-                      type="text"
-                      value={field.value}
-                      onChange={(e) =>
-                        form.setFieldValue("leave_reason", e.target.value)
-                      }
-                      error={
-                        form.errors.leave_reason && form.touched.leave_reason
-                      }
-                      text={form.errors.leave_reason}
-                      size="small"
-                      variant="standard"
-                      autoComplete="off"
-                    />
                   )}
                 </Field>
                 <div className="flex gap-2.5 w-full justify-end">
@@ -243,7 +162,7 @@ const AddRegularLeave = () => {
                     />
                   ) : (
                     <CustomButton
-                      title="Update"
+                      title="Add"
                       containerStyles="text-green-500 dark:text-green-300 bg-green-50 hover:bg-green-100"
                       type="submit"
                       disable={isFormInvalid(props.values)}
@@ -252,14 +171,14 @@ const AddRegularLeave = () => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          strokeWidth="1.5"
+                          strokeWidth={1.5}
                           stroke="currentColor"
                           className="w-5 h-5"
                         >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
                           />
                         </svg>
                       }
@@ -275,4 +194,4 @@ const AddRegularLeave = () => {
   );
 };
 
-export default AddRegularLeave;
+export default AddAnnualLeave;
