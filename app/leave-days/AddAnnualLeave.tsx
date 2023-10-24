@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import {
-  setAnnualLeaveData,
+  setAnnualLeave,
   setAnnualLeaveModal,
   setEmpID,
 } from "../redux/features/employee/employeeSlice";
@@ -18,8 +18,9 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 import toast from "react-hot-toast";
-import { editEmployee } from "../firabase";
+import { addEmployeeLeave, editEmployee } from "../firabase";
 import { EmployeeLeave } from "@/types";
+import { DaysBetweenDatesAsNumber } from "@/utils/ConvertDate";
 
 const AddAnnualLeave = () => {
   const [loading, setLoading] = useState(false);
@@ -36,8 +37,9 @@ const AddAnnualLeave = () => {
   const db = getFirestore();
   const employee = useSelector((state: RootState) => state.employee);
   const annualLeaveModal = employee.annualLeaveModal;
-  const annualLeaveData = employee.annualLeaveData;
   const empID = employee.empID;
+  const annualLeave = employee.annualLeave;
+  const annualLeaveEntitlement = annualLeave?.annual_leave_entitlement;
 
   const isFormInvalid = (values: any) => {
     const currentDate = dayjs().add(-1, "day");
@@ -57,6 +59,7 @@ const AddAnnualLeave = () => {
   const handleClose = () => {
     dispatch(setAnnualLeaveModal(false));
     dispatch(setEmpID(""));
+    dispatch(setAnnualLeave(null));
     setLoading(false);
   };
 
@@ -116,11 +119,36 @@ const AddAnnualLeave = () => {
                 } else {
                   // If not, add the new leave.
 
-                  await editEmployee(empID, {
-                    annual_leave_start_date: annualLeaveStartDate.toISOString(),
-                    annual_leave_end_date: annualLeaveEndDate.toISOString(),
-                  });
-                  toast.success("Annual Leave added successfully!");
+                  const remainingAnnualLeave =
+                    annualLeaveEntitlement -
+                    DaysBetweenDatesAsNumber(
+                      annualLeaveStartDate,
+                      annualLeaveEndDate
+                    );
+
+                  if (remainingAnnualLeave > 0) {
+                    await addEmployeeLeave(
+                      {
+                        leave_start_date: annualLeaveStartDate,
+                        leave_end_date: annualLeaveEndDate,
+                        leave_reason: "Annual Leave",
+                      },
+                      empID
+                    );
+
+                    await editEmployee(empID, {
+                      annual_leave: {
+                        annual_leave_start_date: annualLeaveStartDate,
+                        annual_leave_end_date: annualLeaveEndDate,
+                        annual_leave_entitlement: remainingAnnualLeave,
+                      },
+                    });
+                    toast.success("Annual Leave added successfully!");
+                  } else {
+                    toast.error(
+                      "You cannot grant more annual leave than the remaining annual leave entitlement!"
+                    );
+                  }
                 }
               } catch (error: any) {
                 toast.error(`Error: ${error.message}`);

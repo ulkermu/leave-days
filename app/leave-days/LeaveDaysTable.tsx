@@ -20,6 +20,7 @@ import { RootState } from "../redux/store";
 import { useTheme } from "next-themes";
 import { useDispatch } from "react-redux";
 import {
+  setAnnualLeave,
   setAnnualLeaveModal,
   setEmpID,
   setPastLeavesData,
@@ -53,11 +54,13 @@ const LeaveDaysTable = () => {
     birth_date: emp.values.birth_date,
     start_date: emp.values.start_date,
     years_worked: emp.values.start_date,
+    annual_leave: emp.annual_leave,
   }));
 
   const handleAddAnnualLeave = (data: any) => {
     dispatch(setEmpID(data.id));
     dispatch(setAnnualLeaveModal(true));
+    dispatch(setAnnualLeave(data.annual_leave));
   };
 
   const handleAddRegularLeave = (data: any) => {

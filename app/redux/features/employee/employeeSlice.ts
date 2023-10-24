@@ -11,9 +11,9 @@ export interface EmployeeState {
   empRow: object;
   regularLeaveModal: boolean;
   annualLeaveModal: boolean;
-  annualLeaveData: any;
   pastLeavesModal: boolean;
   pastLeavesData: any;
+  annualLeave: any;
 }
 
 const initialState: EmployeeState = {
@@ -30,9 +30,9 @@ const initialState: EmployeeState = {
   },
   regularLeaveModal: false,
   annualLeaveModal: false,
-  annualLeaveData: {},
   pastLeavesModal: false,
   pastLeavesData: [],
+  annualLeave: null,
 };
 
 export const employeeSlice = createSlice({
@@ -60,14 +60,14 @@ export const employeeSlice = createSlice({
     setAnnualLeaveModal: (state, action) => {
       state.annualLeaveModal = action.payload;
     },
-    setAnnualLeaveData: (state, action) => {
-      state.annualLeaveModal = action.payload;
-    },
     setPastLeavesModal: (state, action) => {
       state.pastLeavesModal = action.payload;
     },
     setPastLeavesData: (state, action) => {
       state.pastLeavesData = action.payload;
+    },
+    setAnnualLeave: (state, action) => {
+      state.annualLeave = action.payload;
     },
   },
 });
@@ -80,9 +80,9 @@ export const {
   setEmpRow,
   setRegularLeaveModal,
   setAnnualLeaveModal,
-  setAnnualLeaveData,
   setPastLeavesModal,
   setPastLeavesData,
+  setAnnualLeave
 } = employeeSlice.actions;
 
 export default employeeSlice.reducer;

@@ -67,6 +67,11 @@ const ReviewPastLeaves = () => {
               {ConvertToDate(past.leave_end_date)})
             </div>
           ))}
+          {filteredPastLeaves?.length === 0 && (
+            <div className="bg-orange-50 dark:bg-slate-500 text-orange-700 dark:text-slate-100 p-2.5 rounded-md">
+              This employee has never taken leave before.
+            </div>
+          )}
           <h3 className="text-center text-xl text-orange-700 dark:text-slate-100">
             Planned Leaves
           </h3>
@@ -81,6 +86,11 @@ const ReviewPastLeaves = () => {
               {ConvertToDate(past.leave_end_date)})
             </div>
           ))}
+          {filteredFutureLeaves?.length === 0 && (
+            <div className="bg-orange-50 dark:bg-slate-500 text-orange-700 dark:text-slate-100 p-2.5 rounded-md">
+              This employee has no scheduled leave.
+            </div>
+          )}
           <div className="flex justify-end">
             <CustomButton
               title="Close"

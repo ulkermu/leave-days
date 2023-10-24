@@ -84,6 +84,7 @@ const AddRegularLeave = () => {
 
               const leaveStartDate = values.leave_start_date.toDate();
               const leaveEndDate = values.leave_end_date.toDate();
+              console.log("leaveStartDate", leaveStartDate);
 
               try {
                 // Query the employee's leaves.

@@ -140,6 +140,7 @@ onAuthStateChanged(auth, (user) => {
             const data = employee.data();
 
             const { birth_date, start_date, ...restOfData } = data.values;
+            const { annual_leave } = data;
 
             const startDateString = start_date.toDate().toISOString();
             const birthDateString = birth_date.toDate().toISOString();
@@ -171,6 +172,7 @@ onAuthStateChanged(auth, (user) => {
                 },
                 id: employee.id,
                 create_date: createDateString,
+                annual_leave: annual_leave
               },
             ];
           },
