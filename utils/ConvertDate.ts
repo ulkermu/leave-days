@@ -111,10 +111,36 @@ export const AnnualLeaveEntitlement = (isoString: string) => {
   if (years > 0) {
     result += years === 1 ? 1 : years;
   }
-  
-  if (result < 3) {
-    return 14
+
+  if (result < 5) {
+    return 14;
+  } else if (result > 4 && result < 15) {
+    return 20;
   } else {
-    return 21
+    return 26;
   }
+};
+
+export const DaysBetweenDatesExcludingWeekends = (
+  date1: any,
+  date2: any
+): number => {
+  let dayCount = 0;
+  let currentDate = dayjs(date1);
+
+  // İki tarih arasındaki her bir günü döngü içerisinde kontrol ediyoruz.
+  while (
+    currentDate.isBefore(dayjs(date2)) ||
+    currentDate.isSame(dayjs(date2))
+  ) {
+    // Eğer gün Cumartesi (6) veya Pazar (0) değilse sayıcıyı artırıyoruz.
+    if (currentDate.day() !== 0 && currentDate.day() !== 6) {
+      dayCount++;
+    }
+
+    // Geçerli tarihi bir gün ileri alıyoruz.
+    currentDate = currentDate.add(1, "day");
+  }
+
+  return dayCount;
 };

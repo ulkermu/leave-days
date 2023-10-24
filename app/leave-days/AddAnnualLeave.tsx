@@ -20,7 +20,7 @@ import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { addEmployeeLeave, editEmployee } from "../firabase";
 import { EmployeeLeave } from "@/types";
-import { DaysBetweenDatesAsNumber } from "@/utils/ConvertDate";
+import { DaysBetweenDatesExcludingWeekends } from "@/utils/ConvertDate";
 
 const AddAnnualLeave = () => {
   const [loading, setLoading] = useState(false);
@@ -121,7 +121,7 @@ const AddAnnualLeave = () => {
 
                   const remainingAnnualLeave =
                     annualLeaveEntitlement -
-                    DaysBetweenDatesAsNumber(
+                    DaysBetweenDatesExcludingWeekends(
                       annualLeaveStartDate,
                       annualLeaveEndDate
                     );
