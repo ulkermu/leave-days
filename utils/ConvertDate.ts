@@ -27,13 +27,13 @@ export const ConvertToAge = (isoString: string) => {
 };
 
 export const ConvertToYearsWorked = (isoString: string) => {
-  const birthDate = new Date(isoString);
+  const startDate = new Date(isoString);
   const currentDate = new Date();
 
-  let years = currentDate.getFullYear() - birthDate.getFullYear();
-  let months = currentDate.getMonth() - birthDate.getMonth();
+  let years = currentDate.getFullYear() - startDate.getFullYear();
+  let months = currentDate.getMonth() - startDate.getMonth();
 
-  if (currentDate.getDate() < birthDate.getDate()) {
+  if (currentDate.getDate() < startDate.getDate()) {
     months--;
   }
 
@@ -87,4 +87,34 @@ export const DaysBetweenDatesAsNumber = (date1: any, date2: any) => {
 
   // Sonucu istediğiniz string formatında döndürüyoruz.
   return Math.abs(differenceInDays);
+};
+
+export const AnnualLeaveEntitlement = (isoString: string) => {
+  const startDate = new Date(isoString);
+  const currentDate = new Date();
+
+  let years = currentDate.getFullYear() - startDate.getFullYear();
+  let months = currentDate.getMonth() - startDate.getMonth();
+
+  if (currentDate.getDate() < startDate.getDate()) {
+    months--;
+  }
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
+
+  let result = 0;
+
+  // Add years to the result
+  if (years > 0) {
+    result += years === 1 ? 1 : years;
+  }
+  
+  if (result < 3) {
+    return 14
+  } else {
+    return 21
+  }
 };

@@ -2,7 +2,6 @@
 
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { Button } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import { useTheme } from "next-themes";
 import { darkTheme, lightTheme } from "@/theme";
@@ -17,7 +16,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/app/redux/store";
 import { AuthState } from "@/app/redux/features/auth/authSlice";
 import dayjs from "dayjs";
-import { ConvertToAge } from "@/utils/ConvertDate";
+import { AnnualLeaveEntitlement, ConvertToAge } from "@/utils/ConvertDate";
 
 const EmployeeForm = () => {
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ const EmployeeForm = () => {
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
-          setLoading(true);
+          // setLoading(true);
 
           // Convert Day.js object to JavaScript Date object
           const startDateAsDate = values.start_date.toDate();
@@ -71,11 +70,16 @@ const EmployeeForm = () => {
             birth_date: birthDateAsDate,
           };
 
-          // Add the updated values and user ID to the database
+          //Add the updated values and user ID to the database
           await addEmployee({
             values: updatedValues,
             uid: user.uid,
             create_date: dayjs().toDate(),
+            annual_leave: {
+              annual_leave_entitlement: AnnualLeaveEntitlement(
+                startDateAsDate.toISOString()
+              ),
+            },
           });
           handleClose();
         }}

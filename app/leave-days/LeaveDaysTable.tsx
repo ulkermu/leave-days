@@ -123,6 +123,14 @@ const LeaveDaysTable = () => {
         ConvertToYearsWorked(params.row.years_worked),
     },
     {
+      field: "annual_leave_entitlement",
+      headerName: "Remaining Leave",
+      flex: 1,
+      minWidth: 90,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row.annual_leave.annual_leave_entitlement,
+    },
+    {
       field: "actions",
       headerName: "Actions",
       flex: 1,
