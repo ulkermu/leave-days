@@ -1,8 +1,12 @@
 "use client";
 
 import {
+  FormControl,
+  InputLabel,
+  MenuItem,
   Modal,
   PaletteMode,
+  Select,
   TextField,
   ThemeProvider,
   createTheme,
@@ -84,7 +88,6 @@ const AddRegularLeave = () => {
 
               const leaveStartDate = values.leave_start_date.toDate();
               const leaveEndDate = values.leave_end_date.toDate();
-              console.log("leaveStartDate", leaveStartDate);
 
               try {
                 // Query the employee's leaves.
@@ -192,22 +195,41 @@ const AddRegularLeave = () => {
                 </Field>
                 <Field name="leave_reason">
                   {({ field, form }: any) => (
-                    <TextField
-                      {...field}
-                      label="Leave Reason"
-                      type="text"
-                      value={field.value}
-                      onChange={(e) =>
-                        form.setFieldValue("leave_reason", e.target.value)
-                      }
-                      error={
-                        form.errors.leave_reason && form.touched.leave_reason
-                      }
-                      text={form.errors.leave_reason}
-                      size="small"
-                      variant="standard"
-                      autoComplete="off"
-                    />
+                    <FormControl variant="standard" required size="small">
+                      <InputLabel id="select-leave-reason-label">
+                        Leave Reason
+                      </InputLabel>
+                      <Select
+                        labelId="select-leave-reason-label"
+                        id="select-leave-reason"
+                        value={field.value}
+                        {...field}
+                        onChange={(e: any) =>
+                          form.setFieldValue("leave_reason", e.target.value)
+                        }
+                        label="Leave Reason"
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={"Sick Leave"}>Sick Leave</MenuItem>
+                        <MenuItem value={"Bereavement Leave"}>
+                          Bereavement Leave
+                        </MenuItem>
+                        <MenuItem value={"Medical Leave"}>
+                          Medical Leave
+                        </MenuItem>
+                        <MenuItem value={"Maternity/Paternity Leave"}>
+                          Maternity/Paternity Leave
+                        </MenuItem>
+                        <MenuItem value={"Unpaid Leave"}>Unpaid Leave</MenuItem>
+                        <MenuItem value={"Study Leave"}>Study Leave</MenuItem>
+                        <MenuItem value={"Administrative Leave"}>
+                          Administrative Leave
+                        </MenuItem>
+                        <MenuItem value={"Other"}>Other</MenuItem>
+                      </Select>
+                    </FormControl>
                   )}
                 </Field>
                 <div className="flex gap-2.5 w-full justify-end">
