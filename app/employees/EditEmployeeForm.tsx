@@ -198,7 +198,6 @@ const EditEmployeeForm = () => {
                   />
                   {loading ? (
                     <CustomLoading
-                      cCWidth={"100%"}
                       cCHeight={"36.5px"}
                       cWidth={"21px!important"}
                       cHeight={"21px!important"}

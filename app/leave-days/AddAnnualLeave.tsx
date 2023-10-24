@@ -16,6 +16,10 @@ import { useState } from "react";
 import { CustomButton, CustomLoading } from "@/components";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { collection, getDocs, getFirestore, query } from "firebase/firestore";
+import toast from "react-hot-toast";
+import { editEmployee } from "../firabase";
+import { EmployeeLeave } from "@/types";
 
 const AddAnnualLeave = () => {
   const [loading, setLoading] = useState(false);
@@ -29,6 +33,7 @@ const AddAnnualLeave = () => {
   });
 
   const dispatch = useDispatch();
+  const db = getFirestore();
   const employee = useSelector((state: RootState) => state.employee);
   const annualLeaveModal = employee.annualLeaveModal;
   const annualLeaveData = employee.annualLeaveData;
@@ -74,7 +79,56 @@ const AddAnnualLeave = () => {
               const annualLeaveStartDate =
                 values.annual_leave_start_date.toDate();
               const annualLeaveEndDate = values.annual_leave_end_date.toDate();
-              console.log(values);
+
+              try {
+                // Query the employee's leaves.
+                const q = query(collection(db, "employees", empID, "leaves"));
+                const querySnapshot = await getDocs(q);
+
+                let isLeaveExist = false; // this variable is to check if there's a leave on the specified dates
+
+                querySnapshot.forEach((doc) => {
+                  const existingLeave = doc.data() as Omit<EmployeeLeave, "id">;
+
+                  // Convert Firestore timestamp to JavaScript Date object
+                  const existingStartDate =
+                    existingLeave.leave_start_date.toDate();
+                  const existingEndDate = existingLeave.leave_end_date.toDate();
+
+                  // Check all possible overlaps
+                  if (
+                    (annualLeaveStartDate >= existingStartDate &&
+                      annualLeaveStartDate <= existingEndDate) || // Scenario 2
+                    (annualLeaveEndDate >= existingStartDate &&
+                      annualLeaveEndDate <= existingEndDate) || // Scenario 3
+                    (annualLeaveStartDate <= existingStartDate &&
+                      annualLeaveEndDate >= existingEndDate) // Scenario 4
+                  ) {
+                    isLeaveExist = true;
+                  }
+                });
+
+                if (isLeaveExist) {
+                  // If there's a leave on the specified dates, show error message.
+                  toast.error(
+                    "The employee already has a leave for the specified date."
+                  );
+                } else {
+                  // If not, add the new leave.
+
+                  await editEmployee(
+                    {
+                      annual_leave_start_date: annualLeaveStartDate,
+                      annual_leave_end_date: annualLeaveEndDate,
+                    },
+                    empID
+                  );
+                  toast.success("Annual Leave added successfully!");
+                }
+              } catch (error: any) {
+                toast.error(`Error: ${error.message}`);
+              }
+              handleClose();
             }}
           >
             {(props) => (
@@ -155,7 +209,6 @@ const AddAnnualLeave = () => {
                   />
                   {loading ? (
                     <CustomLoading
-                      cCWidth={"100%"}
                       cCHeight={"36.5px"}
                       cWidth={"21px!important"}
                       cHeight={"21px!important"}
