@@ -116,13 +116,10 @@ const AddAnnualLeave = () => {
                 } else {
                   // If not, add the new leave.
 
-                  await editEmployee(
-                    {
-                      annual_leave_start_date: annualLeaveStartDate,
-                      annual_leave_end_date: annualLeaveEndDate,
-                    },
-                    empID
-                  );
+                  await editEmployee(empID, {
+                    annual_leave_start_date: annualLeaveStartDate.toISOString(),
+                    annual_leave_end_date: annualLeaveEndDate.toISOString(),
+                  });
                   toast.success("Annual Leave added successfully!");
                 }
               } catch (error: any) {

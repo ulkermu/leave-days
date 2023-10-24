@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { CustomButton } from "@/components";
 import { useTheme } from "next-themes";
 import { ConvertToDate, DaysBetweenDates } from "@/utils/ConvertDate";
+import dayjs from "dayjs";
 
 const ReviewPastLeaves = () => {
   const isDark = useTheme();
@@ -32,6 +33,18 @@ const ReviewPastLeaves = () => {
     dispatch(setPastLeavesData([]));
   };
 
+  const filteredFutureLeaves = pastLeaves.pastLeavesData?.filter((e: any) => {
+    const leaveStartDate = dayjs(e.leave_start_date);
+    return (
+      leaveStartDate.isAfter(dayjs()) || leaveStartDate.isSame(dayjs(), "day")
+    );
+  });
+
+  const filteredPastLeaves = pastLeaves.pastLeavesData?.filter((e: any) => {
+    const leaveStartDate = dayjs(e.leave_start_date);
+    return leaveStartDate.isBefore(dayjs(), "day");
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Modal
@@ -43,7 +56,21 @@ const ReviewPastLeaves = () => {
           <h3 className="text-center text-xl text-orange-700 dark:text-slate-100">
             Past Leaves
           </h3>
-          {pastLeavesData?.map((past: any, key: number) => (
+          {filteredPastLeaves?.map((past: any, key: number) => (
+            <div
+              key={key}
+              className="bg-orange-50 dark:bg-slate-500 text-orange-700 dark:text-slate-100 p-2.5 rounded-md"
+            >
+              {past.leave_reason} -{" "}
+              {DaysBetweenDates(past.leave_start_date, past.leave_end_date)} (
+              {ConvertToDate(past.leave_start_date)} -{" "}
+              {ConvertToDate(past.leave_end_date)})
+            </div>
+          ))}
+          <h3 className="text-center text-xl text-orange-700 dark:text-slate-100">
+            Planned Leaves
+          </h3>
+          {filteredFutureLeaves?.map((past: any, key: number) => (
             <div
               key={key}
               className="bg-orange-50 dark:bg-slate-500 text-orange-700 dark:text-slate-100 p-2.5 rounded-md"
