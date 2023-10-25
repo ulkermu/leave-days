@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -33,7 +32,7 @@ import {
 } from "../redux/features/employee/employeeSlice";
 import { useState } from "react";
 import { CustomButton } from "@/components";
-import EditEmployeeForm from "./EditEmployeeForm";
+import { EditEmployeeForm } from ".";
 
 const EmployeeList = () => {
   const employee = useSelector((state: RootState) => state.employee);

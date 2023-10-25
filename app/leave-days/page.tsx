@@ -1,8 +1,10 @@
 import { Toaster } from "react-hot-toast";
-import AddRegularLeave from "./AddRegularLeave";
-import LeaveDaysTable from "./LeaveDaysTable";
-import ReviewPastLeaves from "./ReviewPastLeaves";
-import AddAnnualLeave from "./AddAnnualLeave";
+import {
+  AddAnnualLeave,
+  AddRegularLeave,
+  LeaveDaysTable,
+  ReviewPastLeaves,
+} from ".";
 
 const LeaveDays = () => {
   return (

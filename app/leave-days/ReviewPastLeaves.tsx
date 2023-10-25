@@ -26,7 +26,6 @@ const ReviewPastLeaves = () => {
   const dispatch = useDispatch();
   const pastLeaves = useSelector((state: RootState) => state.employee);
   const pastLeavesModal = pastLeaves.pastLeavesModal;
-  const pastLeavesData = pastLeaves.pastLeavesData;
 
   const handleClose = () => {
     dispatch(setPastLeavesModal(false));
