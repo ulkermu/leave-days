@@ -24,6 +24,7 @@ export interface CustomNavLinkProps {
   title: string;
   containerStyles?: string;
   href: string;
+  icon?: ReactNode;
 }
 
 export interface SignUpProps {
@@ -34,4 +35,5 @@ export interface SignUpProps {
 export interface NavLink {
   title: string;
   href: string;
+  icon?: ReactNode;
 }
