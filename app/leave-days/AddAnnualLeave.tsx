@@ -111,6 +111,9 @@ const AddAnnualLeave = () => {
                   }
                 });
 
+                console.log("annualLeaveStartDate", annualLeaveStartDate)
+                console.log("annualLeaveEndDate", annualLeaveEndDate)
+
                 if (isLeaveExist) {
                   // If there's a leave on the specified dates, show error message.
                   toast.error(

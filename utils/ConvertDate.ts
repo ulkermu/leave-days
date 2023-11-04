@@ -121,24 +121,37 @@ export const AnnualLeaveEntitlement = (isoString: string) => {
   }
 };
 
-export const DaysBetweenDatesExcludingWeekends = (
-  date1: any,
-  date2: any
+export const DaysBetweenDatesExcludingSunday = (
+  startDate: Date | string,
+  endDate: Date | string
 ): number => {
   let dayCount = 0;
-  let currentDate = dayjs(date1);
+  let currentDate = dayjs(startDate);
+  const endDay = dayjs(endDate);
 
-  // İki tarih arasındaki her bir günü döngü içerisinde kontrol ediyoruz.
-  while (
-    currentDate.isBefore(dayjs(date2)) ||
-    currentDate.isSame(dayjs(date2))
-  ) {
-    // Eğer gün Cumartesi (6) veya Pazar (0) değilse sayıcıyı artırıyoruz.
+  while (currentDate.isBefore(endDay) || currentDate.isSame(endDay)) {
     if (currentDate.day() !== 0 && currentDate.day() !== 6) {
       dayCount++;
     }
+    currentDate = currentDate.add(1, "day");
+  }
 
-    // Geçerli tarihi bir gün ileri alıyoruz.
+  return dayCount;
+};
+
+export const DaysBetweenDatesExcludingWeekends = (
+  startDate: Date | string,
+  endDate: Date | string
+): number => {
+  let dayCount = 0;
+  let currentDate = dayjs(startDate).startOf("day");
+  const endDay = dayjs(endDate).startOf("day");
+
+  while (currentDate.isBefore(endDay)) {
+    // Hafta sonları hariç, iş günlerini say
+    if (currentDate.day() !== 0 && currentDate.day() !== 6) {
+      dayCount++;
+    }
     currentDate = currentDate.add(1, "day");
   }
 

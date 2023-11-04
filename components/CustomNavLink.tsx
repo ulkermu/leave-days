@@ -10,7 +10,7 @@ const CustomNavLink = ({
   return (
     <Link className={containerStyles} href={href}>
       {icon}
-      <span className="max-[600px]:hidden">{title}</span>
+      <span className="max-[640px]:hidden">{title}</span>
     </Link>
   );
 };
