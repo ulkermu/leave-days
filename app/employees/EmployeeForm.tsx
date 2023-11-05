@@ -77,7 +77,8 @@ const EmployeeForm = () => {
             create_date: dayjs().toDate(),
             annual_leave: {
               annual_leave_entitlement: AnnualLeaveEntitlement(
-                startDateAsDate.toISOString()
+                startDateAsDate.toISOString(),
+                0
               ),
             },
           });

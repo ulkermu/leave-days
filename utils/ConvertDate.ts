@@ -89,7 +89,7 @@ export const DaysBetweenDatesAsNumber = (date1: any, date2: any) => {
   return Math.abs(differenceInDays);
 };
 
-export const AnnualLeaveEntitlement = (isoString: string) => {
+export const AnnualLeaveEntitlement = (isoString: string, additionalDay: number) => {
   const startDate = new Date(isoString);
   const currentDate = new Date();
 
@@ -113,11 +113,11 @@ export const AnnualLeaveEntitlement = (isoString: string) => {
   }
 
   if (result < 5) {
-    return 14;
+    return 14 + additionalDay;
   } else if (result > 4 && result < 15) {
-    return 20;
+    return 20 + additionalDay;
   } else {
-    return 26;
+    return 26 + additionalDay;
   }
 };
 
