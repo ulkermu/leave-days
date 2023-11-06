@@ -10,6 +10,7 @@ import { EmployeeForm, EmployeeList } from ".";
 const Employees = () => {
   const employee = useSelector((state: RootState) => state.employee);
   const modal = employee.modal;
+  const employees = employee.employees;
 
   const dispatch = useDispatch();
 
@@ -55,7 +56,7 @@ const Employees = () => {
           </svg>
         }
       />
-      <EmployeeList />
+      {employees.length !== 0 && <EmployeeList />}
     </main>
   );
 };
