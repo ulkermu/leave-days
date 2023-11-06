@@ -30,6 +30,8 @@ import {
 import { collection, getDocs, getFirestore, query } from "firebase/firestore";
 import { EmployeeLeave } from "@/types";
 import toast from "react-hot-toast";
+import Link from "next/link";
+import { CustomNavLink } from "@/components";
 
 const LeaveDaysTable = () => {
   const db = getFirestore();
@@ -200,7 +202,16 @@ const LeaveDaysTable = () => {
     <ThemeProvider theme={theme}>
       <Box>
         {rows.length === 0 ? (
-          <p className="text-center">Employee not found.</p>
+          <p className="text-center">
+            If there are no employees, then no one can take a day off. If you
+            agree with me, let's head over to the{" "}
+            <CustomNavLink
+              href={"/employees"}
+              title="employees"
+              containerStyles="text-blue-500 hover:text-blue-700 duration-150 ease-out dark:text-blue-300 dark:hover:text-blue-500"
+            />{" "}
+            page!
+          </p>
         ) : (
           <DataGrid
             rows={rows}
