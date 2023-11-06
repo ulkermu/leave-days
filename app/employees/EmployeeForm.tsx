@@ -70,6 +70,8 @@ const EmployeeForm = () => {
             birth_date: birthDateAsDate,
           };
 
+          const age = ConvertToAge(birthDateAsDate.toISOString());
+
           //Add the updated values and user ID to the database
           await addEmployee({
             values: updatedValues,
@@ -78,7 +80,8 @@ const EmployeeForm = () => {
             annual_leave: {
               annual_leave_entitlement: AnnualLeaveEntitlement(
                 startDateAsDate.toISOString(),
-                0
+                0,
+                age
               ),
             },
           });
