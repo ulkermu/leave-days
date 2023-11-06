@@ -57,7 +57,7 @@ const EmployeeForm = () => {
         }}
         validationSchema={schema}
         onSubmit={async (values) => {
-          // setLoading(true);
+          setLoading(true);
 
           // Convert Day.js object to JavaScript Date object
           const startDateAsDate = values.start_date.toDate();
